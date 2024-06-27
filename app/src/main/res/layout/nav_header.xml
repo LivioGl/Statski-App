@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="176dp"
+    android:background="@color/blue"
+    android:gravity="bottom"
+    android:padding="16dp"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark"
+    >
+
+    <ImageView
+        android:layout_width="107dp"
+        android:layout_height="97dp"
+        android:src="@drawable/statskilogo"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Statski"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="14sp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="The main hub for all Alpine Ski World Cup fans"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:layout_marginBottom="0dp"/>
+
+</LinearLayout>

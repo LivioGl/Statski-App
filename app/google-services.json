@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "212262965916",
+    "project_id": "statski-366fa",
+    "storage_bucket": "statski-366fa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:212262965916:android:b0b2de8995d453a8c65359",
+        "android_client_info": {
+          "package_name": "com.example.statski"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "212262965916-mq33of7dlhha6tqdquhtuaghou6sknm1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_NPNJ8ZBHEkS6E9CkUHa3Klj-0xrjKAc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "212262965916-mq33of7dlhha6tqdquhtuaghou6sknm1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
