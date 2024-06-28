@@ -26,10 +26,10 @@ fun ReadJSONFromAssets(context: Context, path: String): String {
     val identifier = "[ReadJSON]"
     try {
         val file = context.assets.open("$path")
-        Log.i(
-            identifier,
-            "Found File: $file.",
-        )
+//        Log.i(
+//            identifier,
+//            "Found File: $file.",
+//        )
         val bufferedReader = BufferedReader(InputStreamReader(file))
         val stringBuilder = StringBuilder()
         bufferedReader.useLines { lines ->
@@ -37,10 +37,10 @@ fun ReadJSONFromAssets(context: Context, path: String): String {
                 stringBuilder.append(it)
             }
         }
-        Log.i(
-            identifier,
-            "getJSON stringBuilder: $stringBuilder.",
-        )
+//        Log.i(
+//            identifier,
+//            "getJSON stringBuilder: $stringBuilder.",
+//        )
         val jsonString = stringBuilder.toString()
         Log.i(
             identifier,
@@ -89,9 +89,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val race = obj.getJSONArray(i)
             for(j in 0 until race.length()) {
                 val athlinfo = race.getJSONObject(j)
+                // val year : String =
                 val athl_instance = Athlete(
                     name = athlinfo.getString("name"),
-                    nation = athlinfo.getString("nationality")
+                    nation = athlinfo.getString("nationality"),
+                    birth = athlinfo.getString("year_of_birth")
                 )
 
                 if(!AthletesMap.containsKey(athl_instance.name)){
@@ -116,7 +118,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
         val Goggia : Athlete? = AthletesMap.get("GOGGIA Sofia")
         if (Goggia != null) {
-            println(Goggia.performance_list)
+            println(Goggia.name)
+            println(Goggia.nation)
+            println(Goggia.birth)
         }
 
 
