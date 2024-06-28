@@ -89,11 +89,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val race = obj.getJSONArray(i)
             for(j in 0 until race.length()) {
                 val athlinfo = race.getJSONObject(j)
-                // val year : String =
+                val year : String = athlinfo.getString("year_of_birth")
                 val athl_instance = Athlete(
                     name = athlinfo.getString("name"),
                     nation = athlinfo.getString("nationality"),
-                    birth = athlinfo.getString("year_of_birth")
+                    birth = year.toInt()
                 )
 
                 if(!AthletesMap.containsKey(athl_instance.name)){
