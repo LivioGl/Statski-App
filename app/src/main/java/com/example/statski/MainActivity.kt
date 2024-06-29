@@ -5,6 +5,7 @@ import android.content.Context
 import android.util.Log
 import android.view.MenuItem
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -14,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.ViewModel
 import com.google.android.material.navigation.NavigationView
 import org.json.JSONArray
 import java.io.BufferedReader
@@ -59,7 +61,11 @@ fun ReadJSONFromAssets(context: Context, path: String): String {
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
+    private val viewModel : AthletesViewModel by viewModels()
     private lateinit var drawerLayout: DrawerLayout
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -79,49 +85,62 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             navigationView.setCheckedItem(R.id.nav_home)
         }
 
+        fun readJSON(filepath: String, AthletesMap: MutableMap<String, Athlete>){
+            val outputString: String = ReadJSONFromAssets(this, filepath)
+            if (outputString.isEmpty()) {
+                Log.e("MainActivity", "Failed to read JSON file: $filepath")
+                return
+            }
+
+            try {
+                val obj = JSONArray(outputString)
+                for (i in 0 until obj.length()) {
+                    val race = obj.getJSONArray(i)
+                    for (j in 0 until race.length()) {
+                        val athlinfo = race.getJSONObject(j)
+                        val year: String = athlinfo.getString("year_of_birth")
+                        val athlInstance = Athlete(
+                            name = athlinfo.getString("name"),
+                            nation = athlinfo.getString("nationality"),
+                            birth = year.toInt()
+                        )
+
+                        if (!AthletesMap.containsKey(athlInstance.name)) {
+                            AthletesMap[athlInstance.name] = athlInstance
+                        }
+                        val performanceDay = athlinfo.getString("date")
+                        val formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy")
+                        val performanceDate = LocalDate.parse(performanceDay, formatter)
+
+                        val prfm = Performance(
+                            position = athlinfo.getString("position"),
+                            total_time = athlinfo.getString("total_time"),
+                            cup_points = athlinfo.getString("cup_points"),
+                            run1 = athlinfo.optString("run1"),
+                            run2 = athlinfo.optString("run2"),
+                            place = athlinfo.getString("place"),
+                            date = performanceDate,
+                            category = athlinfo.getString("race_type")
+                        )
+                        AthletesMap[athlInstance.name]?.performance_list?.add(prfm)
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e("MainActivity", "Error parsing JSON file: $filepath", e)
+            }
+            Log.d("MainActivity", "Number of athletes in map: ${AthletesMap.size}")
+
+        }
         // Data loading
         val AthletesMap = mutableMapOf<String, Athlete>()
-
-        val OutputString : String = ReadJSONFromAssets(this, "speed_race.json")
-        val obj = JSONArray(OutputString)
-
-        for(i in 0 until obj.length() ) {
-            val race = obj.getJSONArray(i)
-            for(j in 0 until race.length()) {
-                val athlinfo = race.getJSONObject(j)
-                val year : String = athlinfo.getString("year_of_birth")
-                val athl_instance = Athlete(
-                    name = athlinfo.getString("name"),
-                    nation = athlinfo.getString("nationality"),
-                    birth = year.toInt()
-                )
-
-                if(!AthletesMap.containsKey(athl_instance.name)){
-                    AthletesMap[athl_instance.name] = athl_instance
-                }
-                val performance_day = athlinfo.getString("date")
-                val formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy")
-                val performance_date = LocalDate.parse(performance_day, formatter)
-
-                val prfm = Performance(
-                    position = athlinfo.getString("position"),
-                    total_time = athlinfo.getString("total_time"),
-                    cup_points = athlinfo.getString("cup_points"),
-                    run1 = athlinfo.optString("run1"),
-                    run2 = athlinfo.optString("run2"),
-                    place = athlinfo.getString("place"),
-                    date = performance_date,
-                    category = athlinfo.getString("race_type")
-                )
-                AthletesMap.get(athl_instance.name)!!.performance_list.add(prfm)
-            }
+        try {
+            readJSON("speed_race.json", AthletesMap)
+            readJSON("tech_race.json", AthletesMap)
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Error reading JSON files", e)
         }
-        val Goggia : Athlete? = AthletesMap.get("GOGGIA Sofia")
-        if (Goggia != null) {
-            println(Goggia.name)
-            println(Goggia.nation)
-            println(Goggia.birth)
-        }
+        Log.d("MainActivity", "Setting athletes map in ViewModel")
+        viewModel.setAthletesMap(AthletesMap)
 
 
 
