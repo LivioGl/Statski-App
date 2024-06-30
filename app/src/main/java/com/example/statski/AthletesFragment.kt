@@ -16,6 +16,7 @@ import com.example.statski.databinding.FragmentAthletesBinding
 import com.google.android.material.tabs.TabLayout.LabelVisibility
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.example.statski.databinding.ItemAthletesLayoutBinding
 
@@ -23,7 +24,7 @@ class AthletesFragment : Fragment() {
 
     // Create databinding
     private lateinit var binding: FragmentAthletesBinding
-    val viewModel_instance : AthletesViewModel by viewModels()
+    val viewModel_instance : AthletesViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,7 +63,9 @@ class AthleteAdapter(val context: Context, val athleteList: List<Athlete>) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         val athlete = athleteList[position]
-        holder.binding.athlete = athlete
+        holder.binding.athlId.text = athlete.name
+        holder.binding.natId.text = athlete.nation
+        holder.binding.year.text = athlete.birth.toString()
         holder.binding.executePendingBindings()
     }
     override fun getItemCount(): Int {
