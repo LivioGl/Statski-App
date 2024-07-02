@@ -12,6 +12,7 @@ import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
 
 class WelcomeActivity : AppCompatActivity() {
     private val signInLauncher = registerForActivityResult(FirebaseAuthUIActivityResultContract())
@@ -42,8 +43,6 @@ class WelcomeActivity : AppCompatActivity() {
             AuthUI.IdpConfig.EmailBuilder().build(),
             AuthUI.IdpConfig.GoogleBuilder().build(),
         )
-//        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-//        setSupportActionBar(toolbar)
 
         // Create and launch sign-in intent
         val signInIntent = AuthUI.getInstance()

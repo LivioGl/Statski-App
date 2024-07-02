@@ -9,6 +9,6 @@ data class Performance(
     val run1 : String?,
     val run2 : String?,
     val place : String,
-    val date : LocalDate,
+    val date : String,
     val category : String
 )

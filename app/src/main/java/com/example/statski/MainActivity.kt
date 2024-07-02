@@ -28,10 +28,6 @@ fun ReadJSONFromAssets(context: Context, path: String): String {
     val identifier = "[ReadJSON]"
     try {
         val file = context.assets.open("$path")
-//        Log.i(
-//            identifier,
-//            "Found File: $file.",
-//        )
         val bufferedReader = BufferedReader(InputStreamReader(file))
         val stringBuilder = StringBuilder()
         bufferedReader.useLines { lines ->
@@ -39,10 +35,6 @@ fun ReadJSONFromAssets(context: Context, path: String): String {
                 stringBuilder.append(it)
             }
         }
-//        Log.i(
-//            identifier,
-//            "getJSON stringBuilder: $stringBuilder.",
-//        )
         val jsonString = stringBuilder.toString()
         Log.i(
             identifier,
@@ -108,9 +100,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         if (!AthletesMap.containsKey(athlInstance.name)) {
                             AthletesMap[athlInstance.name] = athlInstance
                         }
-                        val performanceDay = athlinfo.getString("date")
-                        val formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy")
-                        val performanceDate = LocalDate.parse(performanceDay, formatter)
 
                         val prfm = Performance(
                             position = athlinfo.getString("position"),
@@ -119,7 +108,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             run1 = athlinfo.optString("run1"),
                             run2 = athlinfo.optString("run2"),
                             place = athlinfo.getString("place"),
-                            date = performanceDate,
+                            date = athlinfo.getString("date"),
                             category = athlinfo.getString("race_type")
                         )
                         AthletesMap[athlInstance.name]?.performance_list?.add(prfm)
@@ -129,18 +118,63 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 Log.e("MainActivity", "Error parsing JSON file: $filepath", e)
             }
             Log.d("MainActivity", "Number of athletes in map: ${AthletesMap.size}")
-
         }
+        fun readSlopes(filepath: String, SlopesMap: MutableMap<String, Slope>){
+            val outputString: String = ReadJSONFromAssets(this, filepath)
+            if (outputString.isEmpty()) {
+                Log.e("MainActivity", "Failed to read JSON file [SLOPE]: $filepath")
+                return
+            }
+
+            try {
+                val obj = JSONArray(outputString)
+                for (i in 0 until obj.length()) {
+                    val race = obj.getJSONArray(i)
+                    for (j in 0 until race.length()) {
+                        val slopeinfo = race.getJSONObject(j)
+                        val SlopeInstance = Slope(
+                            name = slopeinfo.getString("name"),
+                            location = slopeinfo.getString("location"),
+                            mountain = slopeinfo.getString("mountain"),
+                            nation = slopeinfo.getString("nation"),
+                            race_host = slopeinfo.getString("race_host"),
+                            length = slopeinfo.getString("length"),
+                            start_high = slopeinfo.getString("start"),
+                            end_high = slopeinfo.getString("end"),
+                            steep = slopeinfo.getString("steep"),
+                            vertical_drop = slopeinfo.getString("vertical_drop")
+                        )
+
+                        if (!SlopesMap.containsKey(SlopeInstance.name)) {
+                            SlopesMap[SlopeInstance.name] = SlopeInstance
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e("MainActivity", "Error parsing JSON file: $filepath", e)
+            }
+            Log.d("MainActivity", "Number of Slopes in map: ${SlopesMap.size}")
+        }
+
+
         // Data loading
         val AthletesMap = mutableMapOf<String, Athlete>()
+        val SlopesMap = mutableMapOf<String, Slope>()
         try {
             readJSON("speed_race.json", AthletesMap)
             readJSON("tech_race.json", AthletesMap)
         } catch (e: Exception) {
             Log.e("MainActivity", "Error reading JSON files", e)
         }
+        try{
+            readSlopes("slopes.json", SlopesMap)
+        } catch(e: Exception) {
+            Log.e("MainActivity", "Error reading JSON files [SLOPES]", e)
+        }
+
         Log.d("MainActivity", "Setting athletes map in ViewModel")
         viewModel.setAthletesMap(AthletesMap)
+        viewModel.setSlopesMap(SlopesMap)
 
 
 
