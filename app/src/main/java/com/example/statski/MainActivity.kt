@@ -54,6 +54,7 @@ fun ReadJSONFromAssets(context: Context, path: String): String {
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private val viewModel : AthletesViewModel by viewModels()
+    private val viewModelSlope : SlopesViewModel by viewModels()
     private lateinit var drawerLayout: DrawerLayout
 
 
@@ -174,7 +175,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         Log.d("MainActivity", "Setting athletes map in ViewModel")
         viewModel.setAthletesMap(AthletesMap)
-        viewModel.setSlopesMap(SlopesMap)
+        viewModelSlope.setSlopesMap(SlopesMap)
 
 
 
