@@ -91,6 +91,7 @@ class SlopesAdapter(val context: Context, val SlopesList : List<Slope>):
         holder.binding.slopeLocation.text = slope.location
         holder.binding.slopeVerticalDrop.text = slope.vertical_drop
         holder.binding.slopeNation.text = slope.nation
+        holder.binding.raceSteep.text = slope.steep
         holder.binding.raceLength.text = slope.length
     }
 

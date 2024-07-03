@@ -32,7 +32,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="18sp"
+                    android:textSize="30sp"
                     android:textStyle="bold"
                     tools:text="Slope name" />
             </LinearLayout>
@@ -47,7 +47,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="0dp">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -59,7 +60,7 @@
                         android:id="@+id/location"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_weight="0.5"
                         android:src="@drawable/location" />
 
                     <TextView
@@ -83,7 +84,7 @@
                         android:id="@+id/mountain"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
+                        android:layout_weight="0.5"
                         android:src="@drawable/mountain" />
 
                     <TextView
@@ -107,7 +108,7 @@
                         android:id="@+id/nation"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
+                        android:layout_weight="0.5"
                         android:src="@drawable/nation" />
 
                     <TextView
@@ -138,7 +139,7 @@
                         android:id="@+id/race"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_weight="0.5"
                         android:src="@drawable/baseline_downhill_skiing_24" />
 
                     <TextView
@@ -162,7 +163,7 @@
                         android:id="@+id/length"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
+                        android:layout_weight="0.5"
                         android:src="@drawable/length" />
 
                     <TextView
@@ -186,7 +187,7 @@
                         android:id="@+id/steep"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
+                        android:layout_weight="0.5"
                         android:src="@drawable/steep" />
 
                     <TextView
@@ -241,7 +242,7 @@
                         android:id="@+id/end"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
+                        android:layout_weight="0.5"
                         android:src="@drawable/finish_flag" />
 
                     <TextView
@@ -265,7 +266,7 @@
                         android:id="@+id/vertical_drop"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
+                        android:layout_weight="0.5"
                         android:src="@drawable/vertical_drop" />
 
                     <TextView
