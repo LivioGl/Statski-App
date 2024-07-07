@@ -7,12 +7,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.statski.databinding.FragmentAthletesBinding
 import com.example.statski.databinding.FragmentWCSlopesBinding
 import com.example.statski.databinding.SlopesListBinding
+import java.util.Locale
 
 val slopeImageMap = mapOf(
     "Gran Risa" to R.drawable.granrisa,
@@ -40,6 +43,8 @@ class WCSlopesFragment : Fragment() {
     // Create databinding
     private lateinit var binding : FragmentWCSlopesBinding
     val viewModel_instance : SlopesViewModel by activityViewModels()
+    private var SlopesList = mutableListOf<Slope>()
+    private lateinit var slopesAdapter: SlopesAdapter
 
 
     override fun onCreateView(
@@ -56,21 +61,53 @@ class WCSlopesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         Log.d("WCSlopesFragment", "Fragment view created")
         binding.rvSlopes.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvSlopes.setHasFixedSize(true)
 
         // Get Slopes from ViewModel
-        val SlopesList = viewModel_instance.SlopesMap.values.toList()
+        SlopesList = viewModel_instance.SlopesMap.values.toMutableList()
         Log.d("SlopesFragment", "Number of Slopes: ${SlopesList.size}")
-        val adapter = SlopesAdapter(requireContext(), SlopesList)
-        binding.rvSlopes.adapter = adapter
+        slopesAdapter = SlopesAdapter(requireContext(), SlopesList)
+        binding.rvSlopes.adapter = slopesAdapter
+
+        // SearchView Configuration
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
+            android.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                filterList(newText)
+                return true
+            }
+        })
+    }
+    // Filter field
+    private fun filterList(query : String?){
+        if(query!=null){
+            var lowercase_query = query.lowercase(Locale.getDefault())
+            var filteredList = SlopesList.filter{it.name.lowercase(Locale.ROOT).contains(lowercase_query)}
+
+            if(filteredList.isEmpty()){
+                Toast.makeText(requireContext(), "No Slope found", Toast.LENGTH_SHORT).show()
+            } else{
+                slopesAdapter.setFilteredList(filteredList)
+            }
+        } else slopesAdapter.setFilteredList(SlopesList)
     }
 
 }
 
 
 
-class SlopesAdapter(val context: Context, val SlopesList : List<Slope>):
+class SlopesAdapter(val context: Context, var SlopesList : List<Slope>):
         RecyclerView.Adapter<SlopesAdapter.ViewHolder>(){
             inner class ViewHolder(val binding : SlopesListBinding): RecyclerView.ViewHolder(binding.root)
+
+    fun setFilteredList(ListSlopes: List<Slope>){
+        this.SlopesList = ListSlopes
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)

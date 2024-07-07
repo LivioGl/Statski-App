@@ -34,13 +34,13 @@
             "length": "1198 m",
             "start": "3.040 m",
             "end": "2.670 m",
-            "steep": "68%",
+            "steep": "68,2%",
             "vertical_drop": "370 m"
         },
         {
             "name": "La Face de Bellevarde",
             "location": "Val d'Isere",
-            "mountain": "Rocher de Bellevarde",
+            "mountain": "Rocher",
             "nation": "FRA",
             "race_host": "GS, SL",
             "length": "1300 m",
@@ -100,7 +100,7 @@
         {
             "name": "Birds of Prey",
             "location": "Beaver Creek",
-            "mountain": "B.Creek Mountain",
+            "mountain": "BC Mount",
             "nation": "USA",
             "race_host": "DH, SG",
             "length": "2623 m",
@@ -124,7 +124,7 @@
         {
             "name": "Mont Lachaux",
             "location": "Crans-Montana",
-            "mountain": "Mont Lachaux",
+            "mountain": "Lachaux",
             "nation": "SUI",
             "race_host": "DH",
             "length": "2451 m",
@@ -138,7 +138,7 @@
             "location": "Cortina d'Ampezzo",
             "mountain": "Tofane",
             "nation": "ITA",
-            "race_host": "DH",
+            "race_host": "DH, SG",
             "length": "2260 m",
             "start": "2.320 m",
             "end": "1.560 m",
@@ -150,7 +150,7 @@
             "location": "Sankt Moritz",
             "mountain": "Piz Nair",
             "nation": "SUI",
-            "race_host": "DH",
+            "race_host": "DH, SG",
             "length": "2774 m",
             "start": "2.840 m",
             "end": "2.040 m",
@@ -174,12 +174,12 @@
             "location": "Schladming",
             "mountain": "Planai",
             "nation": "AUT",
-            "race_host": "SL",
+            "race_host": "GS, SL",
             "length": "512 m",
             "start": "961 m",
             "end": "745 m",
             "steep": "54%",
-            "vertical_drop": "860 m"
+            "vertical_drop": "216 m"
         },
         {
             "name": "3-Tre",

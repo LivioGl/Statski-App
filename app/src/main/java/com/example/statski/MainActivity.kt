@@ -17,6 +17,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModel
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.firestore
 import org.json.JSONArray
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -53,6 +57,8 @@ fun ReadJSONFromAssets(context: Context, path: String): String {
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
+    private lateinit var firebaseAuth : FirebaseAuth
+    private lateinit var db : FirebaseFirestore
     private val viewModel : AthletesViewModel by viewModels()
     private val viewModelSlope : SlopesViewModel by viewModels()
     private lateinit var drawerLayout: DrawerLayout
@@ -64,6 +70,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
         drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
+
+        // Get Firebase instance
+        db = Firebase.firestore
+        firebaseAuth = FirebaseAuth.getInstance()
+
+
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
@@ -115,7 +127,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         AthletesMap[athlInstance.name]?.performance_list?.add(prfm)
                     }
                 }
-            } catch (e: Exception) {
+            }
+            catch (e: Exception) {
                 Log.e("MainActivity", "Error parsing JSON file: $filepath", e)
             }
             Log.d("MainActivity", "Number of athletes in map: ${AthletesMap.size}")
@@ -176,6 +189,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         Log.d("MainActivity", "Setting athletes map in ViewModel")
         viewModel.setAthletesMap(AthletesMap)
         viewModelSlope.setSlopesMap(SlopesMap)
+        // add username to db
+        db.collection(firebaseAuth.currentUser!!.uid).document("SlopesMap").set(SlopesMap)
 
 
 

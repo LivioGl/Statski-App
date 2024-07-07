@@ -7,23 +7,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import com.example.statski.databinding.FragmentProfileBinding
 import com.firebase.ui.auth.AuthUI
 
 class ProfileFragment : Fragment() {
 
     private lateinit var signOutButton : Button
+    private lateinit var binding : FragmentProfileBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false)
+        binding = FragmentProfileBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        signOutButton = view.findViewById(R.id.sign_out_button)
-        signOutButton.setOnClickListener {
+        binding.signOutButton.setOnClickListener {
             AuthUI.getInstance()
                 .signOut(requireContext()!!)
                 .addOnCompleteListener {
