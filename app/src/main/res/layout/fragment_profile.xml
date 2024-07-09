@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,26 +15,120 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="-1dp"
-        android:layout_marginEnd="2dp"
-        android:layout_marginBottom="684dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
         android:text="Sign out"
-        android:textColorLink="#03A9F4" />
+        android:textColorLink="#03A9F4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/profile_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Your profile" />
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="108dp"
+        android:background="#FFFFFF"
+        android:fontFamily="sans-serif"
+        android:text="Your profile"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/sign_out_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView2"
+    <EditText
+        android:id="@+id/edit_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="44dp"
-        android:layout_marginBottom="601dp"
-        android:text="TextView" />
+        android:layout_marginTop="3dp"
+        android:ems="10"
+        android:hint="New email"
+        android:inputType="text"
+        android:textAlignment="center"
+        android:textColorHint="#2196F3"
+        android:textSize="24sp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_name" />
 
-</RelativeLayout>
+    <EditText
+        android:id="@+id/edit_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="97dp"
+        android:ems="10"
+        android:hint="New name"
+        android:inputType="text"
+        android:textAlignment="center"
+        android:textColorHint="#2196F3"
+        android:textSize="24sp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_name" />
+
+    <EditText
+        android:id="@+id/edit_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:ems="10"
+        android:hint="Type your password"
+        android:inputType="textPassword"
+        android:textAlignment="center"
+        android:textColorHint="#2196F3"
+        android:textSize="24sp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_email" />
+
+    <TextView
+        android:id="@+id/user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="156dp"
+        android:layout_marginTop="84dp"
+        android:text="Ciao"
+        android:textSize="24sp"
+        android:textStyle="italic"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_title" />
+
+    <Button
+        android:id="@+id/button_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="161dp"
+        android:layout_marginTop="96dp"
+        android:layout_marginEnd="159dp"
+        android:text="Confirm"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.625"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_password"
+        app:rippleColor="#FFFFFF"
+        app:strokeColor="#FFFFFF" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="124dp"
+        android:layout_marginTop="31dp"
+        android:layout_marginEnd="129dp"
+        android:layout_marginBottom="46dp"
+        android:text="Do not leave empty fields"
+        app:layout_constraintBottom_toTopOf="@+id/button_submit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_password"
+        app:layout_constraintVertical_bias="1.0" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

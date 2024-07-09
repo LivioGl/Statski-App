@@ -1,0 +1,454 @@
+[
+  [
+    {
+      "date": "October 26, 2024",
+      "place": "Solden",
+      "nation": "AUT",
+      "race_type": "Women's Giant Slalom"
+    },
+    {
+      "date": "October 27, 2024",
+      "place": "Solden",
+      "nation": "AUT",
+      "race_type": "Men's Giant Slalom"
+    },
+    {
+      "date": "November 16, 2024",
+      "place": "Levi",
+      "nation": "FIN",
+      "race_type": "Women's Slalom"
+    },
+    {
+    "date": "November 17, 2024",
+    "place": "Levi",
+    "nation": "FIN",
+    "race_type": "Women's Slalom"
+    },
+    {
+    "date": "November 23, 2024",
+    "place": "Gurgl",
+    "nation": "AUT",
+    "race_type": "Men's Slalom"
+    },
+    {
+      "date": "November 24, 2024",
+      "place": "Gurgl",
+      "nation": "AUT",
+      "race_type": "Men's Slalom"
+    },
+    {
+      "date": "November 30, 2024",
+      "place": "Killington",
+      "nation": "USA",
+      "race_type": "Women's Giant Slalom"
+    },
+    {
+      "date": "December 01, 2024",
+      "place": "Killigton",
+      "nation": "USA",
+      "race_type": "Women's Slalom"
+    },
+    {
+      "date": "December 06, 2024",
+      "place": "Beaver Creek",
+      "nation": "USA",
+      "race_type": "Men's Downhill"
+    },
+    {
+      "date": "December 07, 2024",
+      "place": "Beaver Creek",
+      "nation": "USA",
+      "race_type": "Men's SuperG"
+    },
+    {
+      "date": "December 08, 2024",
+      "place": "Beaver Creek",
+      "nation": "USA",
+      "race_type": "Men's Giant Slalom"
+    },
+    {
+      "date": "December 07, 2024",
+      "place": "Tremblant",
+      "nation": "CAN",
+      "race_type": "Women's Giant Slalom"
+    },
+    {
+      "date": "December 08, 2024",
+      "place": "Tremblant",
+      "nation": "CAN",
+      "race_type": "Women's Giant Slalom"
+    },
+    {
+      "date": "December 14, 2024",
+      "place": "Beaver Creek",
+      "nation": "USA",
+      "race_type": "Women's Downhill"
+    },
+    {
+      "date": "December 15, 2024",
+      "place": "Beaver Creek",
+      "nation": "USA",
+      "race_type": "Women's SuperG"
+    },
+    {
+      "date": "December 14, 2024",
+      "place": "Val d'Isere",
+      "nation": "FRA",
+      "race_type": "Men's Giant Slalom"
+    },
+    {
+      "date": "December 15, 2024",
+      "place": "Val d'Isere",
+      "nation": "FRA",
+      "race_type": "Men's Slalom"
+    },
+    {
+      "date": "December 2O, 2024",
+      "place": "Val Gardena",
+      "nation": "ITA",
+      "race_type": "Men's SuperG"
+    },
+    {
+      "date": "December 21, 2024",
+      "place": "Val Gardena",
+      "nation": "ITA",
+      "race_type": "Men's Downhill"
+    },
+    {
+      "date": "December 21, 2024",
+      "place": "Sankt Moritz",
+      "nation": "SUI",
+      "race_type": "Women's SuperG"
+    },
+    {
+      "date": "December 22, 2024",
+      "place": "Sankt Moritz",
+      "nation": "SUI",
+      "race_type": "Women's SuperG"
+    },
+    {
+      "date": "December 22, 2024",
+      "place": "Alta Badia",
+      "nation": "ITA",
+      "race_type": "Men's Giant Slalom"
+    },
+    {
+      "date": "December 23, 2024",
+      "place": "Alta Badia",
+      "nation": "ITA",
+      "race_type": "Men's Slalom"
+    },
+    {
+      "date": "December 28, 2024",
+      "place": "Bormio",
+      "nation": "ITA",
+      "race_type": "Men's Downhill"
+    },
+    {
+      "date": "December 29, 2024",
+      "place": "Bormio",
+      "nation": "ITA",
+      "race_type": "Men's SuperG"
+    },
+    {
+      "date": "December 28, 2024",
+      "place": "Semmering",
+      "nation": "AUT",
+      "race_type": "Women's Giant Slalom"
+    },
+    {
+      "date": "December 29, 2024",
+      "place": "Semmering",
+      "nation": "AUT",
+      "race_type": "Women's Slalom"
+    },
+    {
+      "date": "January 04, 2025",
+      "place": "Kranjska Gora",
+      "nation": "SLO",
+      "race_type": "Women's Giant Slalom"
+    },
+    {
+      "date": "January 05 2025",
+      "place": "Kranjska Gora",
+      "nation": "SLO",
+      "race_type": "Women's Slalom"
+    },
+    {
+      "date": "January 08, 2025",
+      "place": "Madonna di Campiglio",
+      "nation": "ITA",
+      "race_type": "Men's Slalom"
+    },
+    {
+      "date": "January 11, 2025",
+      "place": "Sankt Anton",
+      "nation": "AUT",
+      "race_type": "Women's Downhill"
+    },
+    {
+      "date": "January 12, 2025",
+      "place": "Sankt Anton",
+      "nation": "AUT",
+      "race_type": "Women's SuperG"
+    },
+    {
+      "date": "January 11, 2025",
+      "place": "Adelboden",
+      "nation": "SUI",
+      "race_type": "Men's Giant Slalom"
+    },
+    {
+      "date": "January 12, 2025",
+      "place": "Adelboden",
+      "nation": "SUI",
+      "race_type": "Men's Slalom"
+    },
+    {
+      "date": "January 14, 2025",
+      "place": "Flachau",
+      "nation": "AUT",
+      "race_type": "Women's Slalom"
+    },
+    {
+      "date": "January 17, 2025",
+      "place": "Wengen",
+      "nation": "SUI",
+      "race_type": "Men's SuperG"
+    },
+    {
+      "date": "January 18, 2025",
+      "place": "Wengen",
+      "nation": "SUI",
+      "race_type": "Men's Downhill"
+    },
+    {
+      "date": "January 19, 2025",
+      "place": "Wengen",
+      "nation": "SUI",
+      "race_type": "Men's Slalom"
+    },
+    {
+      "date": "January 18, 2025",
+      "place": "Cortina d'Ampezzo",
+      "nation": "ITA",
+      "race_type": "Women's Downhill"
+    },
+    {
+      "date": "January 19, 2025",
+      "place": "Cortina d'Ampezzo",
+      "nation": "ITA",
+      "race_type": "Women's SuperG"
+    },
+    {
+      "date": "January 21, 2025",
+      "place": "Kronplatz",
+      "nation": "ITA",
+      "race_type": "Women's Giant Slalom"
+    },
+    {
+      "date": "January 24, 2025",
+      "place": "Kitzbuehel",
+      "nation": "AUT",
+      "race_type": "Men's SuperG"
+    },
+    {
+      "date": "January 25, 2025",
+      "place": "Kitzbuehel",
+      "nation": "AUT",
+      "race_type": "Men's Downhill"
+    },
+    {
+      "date": "January 26, 2025",
+      "place": "Kitzbuehel",
+      "nation": "AUT",
+      "race_type": "Men's Slalom"
+    },
+    {
+      "date": "January 25, 2025",
+      "place": "Garmisch",
+      "nation": "GER",
+      "race_type": "Women's Downhill"
+    },
+    {
+      "date": "January 26, 2025",
+      "place": "Garmisch",
+      "nation": "GER",
+      "race_type": "Women's SuperG"
+    },
+    {
+      "date": "January 28, 2025",
+      "place": "Schladming",
+      "nation": "AUT",
+      "race_type": "Men's Giant Slalom"
+    },
+    {
+      "date": "January 29, 2025",
+      "place": "Schladming",
+      "nation": "AUT",
+      "race_type": "Men's Slalom"
+    },
+    {
+      "date": "January 30, 2025",
+      "place": "Courchevel",
+      "nation": "FRA",
+      "race_type": "Women's Slalom"
+    },
+    {
+      "date": "Febraury 02, 2025",
+      "place": "Garmisch",
+      "nation": "GER",
+      "race_type": "Men's Downhill"
+    },
+    {
+      "date": "February 22, 2025",
+      "place": "Crans-Montana",
+      "nation": "SUI",
+      "race_type": "Men's Downhill"
+    },
+    {
+      "date": "February 23, 2025",
+      "place": "Crans-Montana",
+      "nation": "SUI",
+      "race_type": "Men's SuperG"
+    },
+    {
+      "date": "February 22, 2025",
+      "place": "Sestriere",
+      "nation": "ITA",
+      "race_type": "Women's Giant Slalom"
+    },
+    {
+      "date": "February 23, 2025",
+      "place": "Sestriere",
+      "nation": "ITA",
+      "race_type": "Women's Slalom"
+    },
+    {
+      "date": "February 28, 2025",
+      "place": "Kvitfjell",
+      "nation": "NOR",
+      "race_type": "Women's Downhill"
+    },
+    {
+      "date": "March 01, 2025",
+      "place": "Kvitfjell",
+      "nation": "NOR",
+      "race_type": "Women's Downhill"
+    },
+    {
+      "date": "March 02, 2025",
+      "place": "Kvitfjell",
+      "nation": "NOR",
+      "race_type": "Women's SuperG"
+    },
+    {
+      "date": "March 01, 2025",
+      "place": "Kranjska Gora",
+      "nation": "SLO",
+      "race_type": "Men's Giant Slalom"
+    },
+    {
+      "date": "March 02, 2025",
+      "place": "Kranjska Gora",
+      "nation": "SLO",
+      "race_type": "Men's Slalom"
+    },
+    {
+      "date": "March 08, 2025",
+      "place": "Kvitfjell",
+      "nation": "NOR",
+      "race_type": "Men's Downhill"
+    },
+    {
+      "date": "March 09, 2025",
+      "place": "Kvitfjell",
+      "nation": "NOR",
+      "race_type": "Men's SuperG"
+    },
+    {
+      "date": "March 08, 2025",
+      "place": "Are",
+      "nation": "SWE",
+      "race_type": "Women's Giant Slalom"
+    },
+    {
+      "date": "March 09, 2025",
+      "place": "Are",
+      "nation": "SWE",
+      "race_type": "Women's Slalom"
+    },
+    {
+      "date": "March 14, 2025",
+      "place": "La Thuile",
+      "nation": "ITA",
+      "race_type": "Women's Downhill"
+    },
+    {
+      "date": "March 15, 2025",
+      "place": "La Thuile",
+      "nation": "ITA",
+      "race_type": "Women's SuperG"
+    },
+    {
+      "date": "March 15, 2025",
+      "place": "Hafjell",
+      "nation": "NOR",
+      "race_type": "Men's Giant Slalom"
+    },
+    {
+      "date": "March 16, 2025",
+      "place": "Hafjell",
+      "nation": "NOR",
+      "race_type": "Men's Slalom"
+    },
+    {
+      "date": "March 22, 2025",
+      "place": "Sun Valley",
+      "nation": "USA",
+      "race_type": "Men's Downhill"
+    },
+    {
+      "date": "March 22, 2025",
+      "place": "Sun Valley",
+      "nation": "USA",
+      "race_type": "Women's Downhill"
+    },
+    {
+      "date": "March 23, 2025",
+      "place": "Sun Valley",
+      "nation": "USA",
+      "race_type": "Women's SuperG"
+    },
+    {
+      "date": "March 23, 2025",
+      "place": "Sun Valley",
+      "nation": "USA",
+      "race_type": "Men's SuperG"
+    },
+    {
+      "date": "March 25, 2025",
+      "place": "Sun Valley",
+      "nation": "USA",
+      "race_type": "Women's Giant Slalom"
+    },
+    {
+      "date": "March 26, 2025",
+      "place": "Sun Valley",
+      "nation": "USA",
+      "race_type": "Men's Giant Slalom"
+    },
+    {
+      "date": "March 27, 2025",
+      "place": "Sun Valley",
+      "nation": "USA",
+      "race_type": "Men's Slalom"
+    },
+    {
+      "date": "March 27, 2025",
+      "place": "Sun Valley",
+      "nation": "USA",
+      "race_type": "Women's Slalom"
+    }
+  ]
+]

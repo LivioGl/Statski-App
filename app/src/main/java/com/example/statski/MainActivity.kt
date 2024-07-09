@@ -170,6 +170,34 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             Log.d("MainActivity", "Number of Slopes in map: ${SlopesMap.size}")
         }
 
+        fun readRaces(filepath: String, RacesMap: MutableList<Race>){
+            val outputString: String = ReadJSONFromAssets(this, filepath)
+            if (outputString.isEmpty()) {
+                Log.e("MainActivity", "Failed to read JSON file [RACE]: $filepath")
+                return
+            }
+
+            try {
+                val obj = JSONArray(outputString)
+                for (i in 0 until obj.length()) {
+                    val race = obj.getJSONArray(i)
+                    for (j in 0 until race.length()) {
+                        val raceinfo = race.getJSONObject(j)
+                        val RaceInstance = Race(
+                            date = raceinfo.getString("date"),
+                            place = raceinfo.getString("place"),
+                            nation = raceinfo.getString("nation"),
+                            race_type = raceinfo.getString("race_type")
+                        )
+                        RacesMap.add(RaceInstance)
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e("MainActivity", "Error parsing JSON file: $filepath", e)
+            }
+            Log.d("MainActivity", "Number of Races in map: ${RacesMap.size}")
+        }
+
 
         // Data loading
         val AthletesMap = mutableMapOf<String, Athlete>()
