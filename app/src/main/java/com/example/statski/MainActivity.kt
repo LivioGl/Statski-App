@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private lateinit var firebaseAuth : FirebaseAuth
     private lateinit var db : FirebaseFirestore
-    private val viewModel : AthletesViewModel by viewModels()
+    private val viewModelAthlete : AthletesViewModel by viewModels()
     private val viewModelSlope : SlopesViewModel by viewModels()
     private lateinit var drawerLayout: DrawerLayout
 
@@ -202,21 +202,27 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Data loading
         val AthletesMap = mutableMapOf<String, Athlete>()
         val SlopesMap = mutableMapOf<String, Slope>()
+        val Calendar = mutableListOf<Race>()
         try {
             readJSON("speed_race.json", AthletesMap)
             readJSON("tech_race.json", AthletesMap)
         } catch (e: Exception) {
-            Log.e("MainActivity", "Error reading JSON files", e)
+            Log.e("MainActivity", "Error reading JSON files [ATHLETES]", e)
         }
         try{
             readSlopes("slopes.json", SlopesMap)
         } catch(e: Exception) {
             Log.e("MainActivity", "Error reading JSON files [SLOPES]", e)
         }
+        try{
+            readRaces("calendar.json", Calendar)
+        } catch(e: Exception) {
+            Log.e("MainActivity", "Error reading JSON files [RACES]", e)
+        }
 
-        Log.d("MainActivity", "Setting athletes map in ViewModel")
-        viewModel.setAthletesMap(AthletesMap)
+        viewModelAthlete.setAthletesMap(AthletesMap)
         viewModelSlope.setSlopesMap(SlopesMap)
+        viewModelAthlete.setCalendar(Calendar)
         // add username to db
         db.collection(firebaseAuth.currentUser!!.uid).document("SlopesMap").set(SlopesMap)
 

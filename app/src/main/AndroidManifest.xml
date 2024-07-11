@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM"/>
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,12 +14,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Statski"
         tools:targetApi="31">
+
+        <!-- Broadcast Receiver for alarm -->
+        <receiver android:name=".AlarmReceiver"/>
+        <!-- Broadcast Receiver for reboot alarms when device is shut down-->
+        <receiver android:name=".BootReceiver"/>
         <activity
             android:name=".WelcomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
+                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -25,6 +32,12 @@
             android:name=".MainActivity"
             android:exported="false">
         </activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
+    <!-- When a device is shut down, all alarms are lost. Following line overcomes this issue -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 </manifest>
