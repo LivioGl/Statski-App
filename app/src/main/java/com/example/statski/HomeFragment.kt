@@ -4,6 +4,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
+import android.content.Context.NOTIFICATION_SERVICE
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
@@ -16,10 +17,15 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getString
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.activityViewModels
 import com.example.statski.databinding.FragmentHomeBinding
 import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.Month
 import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.temporal.ChronoUnit
 import kotlin.math.abs
 
@@ -28,7 +34,7 @@ class HomeFragment : Fragment() {
     private lateinit var binding : FragmentHomeBinding
     val viewModel_instance : AthletesViewModel by activityViewModels()
     private var Races_calendar = mutableListOf<Race>()
-    private lateinit var alarmScheduler: AlarmScheduler
+    private lateinit var alarmScheduler: AndroidAlarmScheduler
 
     companion object {
         private const val NOTIFICATION_PERMISSION_CODE = 1001
@@ -49,28 +55,29 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         Races_calendar = viewModel_instance.calendar
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = "AlarmChannel"
-            val descriptionText = "Channel for alarm notifications"
-            val importance = NotificationManager.IMPORTANCE_HIGH
-            val channel = NotificationChannel("alarm_channel", name, importance).apply {
-                description = descriptionText
-            }
-        }
+
         val WomenRace : Race? = FindNearestRaces(Races_calendar).first
         val MenRace : Race? = FindNearestRaces(Races_calendar).second
-        //val race1 = WomenRace?.let { Race(WomenRace?.date.toString(), it.place, WomenRace.nation, WomenRace.nation) }
 
+        val today = LocalDate.now()
+        if (today.month >= Month.APRIL && today.month <= Month.SEPTEMBER){
+            binding.middleText.text = "Next season is coming! Here there are first races"
+        }
+        else{
+            binding.middleText.text = "Upcoming races:"
+        }
         binding.nextWomenRace.text = WomenRace?.race_type
         binding.whenNextRace.text = WomenRace?.date
         binding.whereNextRace.text = "${WomenRace?.place}, ${WomenRace?.nation}"
+
+        alarmScheduler = AndroidAlarmScheduler(requireContext())
 
         binding.setNotify.setOnClickListener {
             if (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.POST_NOTIFICATIONS)
                 == PackageManager.PERMISSION_GRANTED) {
                 showNotification(WomenRace = true)
             } else {
-                // TODO AGGIUNGI TOAST (Bono sto toast)
+
             }
         }
     }
@@ -105,13 +112,13 @@ class HomeFragment : Fragment() {
     }
 
 
-//
 
 
     private fun showNotification(WomenRace: Boolean){
         val race = if(WomenRace) FindNearestRaces(Races_calendar).first else FindNearestRaces(Races_calendar).second
         race?.let{
             val raceDate = LocalDate.parse(it.date).atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
+            // For testing: substitute raceDate with a unix Value
             val alarmItem = AlarmItem(time = raceDate, race = it)
             alarmScheduler.schedule(alarmItem)
             Toast.makeText(requireContext(), "Notification set for ${it.race_type} on ${it.date}", Toast.LENGTH_SHORT).show()

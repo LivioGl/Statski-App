@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.combineTransform
 class AlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent?) {
         val race: Race? = intent?.getParcelableExtra("EXTRA_MESSAGE")
-        val message = "It's race day! ${race?.race_type} will start soon"
+        val message = "It's racing day! ${race?.race_type} will start soon!"
 
         val tapIntent = Intent(context, WelcomeActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(

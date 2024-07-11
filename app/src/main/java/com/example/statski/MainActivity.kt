@@ -1,7 +1,11 @@
 package com.example.statski
 
+import android.Manifest
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.os.Bundle
 import android.content.Context
+import android.os.Build
 import android.util.Log
 import android.view.MenuItem
 import androidx.activity.enableEdgeToEdge
@@ -9,6 +13,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -19,6 +24,7 @@ import androidx.lifecycle.ViewModel
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 import org.json.JSONArray
@@ -58,6 +64,7 @@ fun ReadJSONFromAssets(context: Context, path: String): String {
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var firebaseAuth : FirebaseAuth
+    private lateinit var user : FirebaseUser
     private lateinit var db : FirebaseFirestore
     private val viewModelAthlete : AthletesViewModel by viewModels()
     private val viewModelSlope : SlopesViewModel by viewModels()
@@ -74,6 +81,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Get Firebase instance
         db = Firebase.firestore
         firebaseAuth = FirebaseAuth.getInstance()
+        user = FirebaseAuth.getInstance().currentUser?: throw IllegalStateException("User not logged")
 
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
@@ -88,6 +96,24 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if (savedInstanceState == null){
             replaceFragment(HomeFragment())
             navigationView.setCheckedItem(R.id.nav_home)
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = "AlarmChannel"
+            val descriptionText = "Channel for alarm notifications"
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel("alarm_channel", name, importance).apply {
+                description = descriptionText
+            }
+            val NotificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+            NotificationManager.createNotificationChannel(channel)
+        }
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.POST_NOTIFICATIONS, Manifest.permission.SCHEDULE_EXACT_ALARM),
+                0
+            )
         }
 
         fun readJSON(filepath: String, AthletesMap: MutableMap<String, Athlete>){
@@ -224,7 +250,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         viewModelSlope.setSlopesMap(SlopesMap)
         viewModelAthlete.setCalendar(Calendar)
         // add username to db
-        db.collection(firebaseAuth.currentUser!!.uid).document("SlopesMap").set(SlopesMap)
+//        user.displayName?.let {
+//            db.collection(firebaseAuth.currentUser!!.uid).document("UserInfo").set(
+//                it
+//            )
+//        }
 
 
 
