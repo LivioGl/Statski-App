@@ -8,6 +8,9 @@ import android.view.ViewGroup
 
 class SingleAthleteStats : Fragment() {
 
+    // This Activity will be part of thesis
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

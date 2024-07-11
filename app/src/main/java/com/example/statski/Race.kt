@@ -3,6 +3,8 @@ package com.example.statski
 import android.os.Parcel
 import android.os.Parcelable
 
+// class to manage race data and use them for notifications text and title
+
 data class Race(
     val date : String,
     val place : String,

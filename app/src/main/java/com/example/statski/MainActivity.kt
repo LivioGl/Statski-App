@@ -52,10 +52,7 @@ fun ReadJSONFromAssets(context: Context, path: String): String {
         )
         return jsonString
     } catch (e: Exception) {
-        Log.e(
-            identifier,
-            "Error reading JSON: $e.",
-        )
+        Log.e(identifier,"Error reading JSON: $e.",)
         e.printStackTrace()
         return ""
     }
@@ -63,9 +60,6 @@ fun ReadJSONFromAssets(context: Context, path: String): String {
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    private lateinit var firebaseAuth : FirebaseAuth
-    private lateinit var user : FirebaseUser
-    private lateinit var db : FirebaseFirestore
     private val viewModelAthlete : AthletesViewModel by viewModels()
     private val viewModelSlope : SlopesViewModel by viewModels()
     private lateinit var drawerLayout: DrawerLayout
@@ -78,12 +72,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_main)
         drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
 
-        // Get Firebase instance
-        db = Firebase.firestore
-        firebaseAuth = FirebaseAuth.getInstance()
-        user = FirebaseAuth.getInstance().currentUser?: throw IllegalStateException("User not logged")
-
-
+        // Setting up toolbar and navigation drawer
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
@@ -97,7 +86,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             replaceFragment(HomeFragment())
             navigationView.setCheckedItem(R.id.nav_home)
         }
-
+        // Create notification channel
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = "AlarmChannel"
             val descriptionText = "Channel for alarm notifications"
@@ -115,7 +104,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 0
             )
         }
-
+        // Functions to parse and read JSON (generated with a python script)
         fun readJSON(filepath: String, AthletesMap: MutableMap<String, Athlete>){
             val outputString: String = ReadJSONFromAssets(this, filepath)
             if (outputString.isEmpty()) {
@@ -130,6 +119,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     for (j in 0 until race.length()) {
                         val athlinfo = race.getJSONObject(j)
                         val year: String = athlinfo.getString("year_of_birth")
+                        // Reading information from JSON and saving it in Athlete attribute
                         val athlInstance = Athlete(
                             name = athlinfo.getString("name"),
                             nation = athlinfo.getString("nationality"),
@@ -195,7 +185,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             Log.d("MainActivity", "Number of Slopes in map: ${SlopesMap.size}")
         }
-
         fun readRaces(filepath: String, RacesMap: MutableList<Race>){
             val outputString: String = ReadJSONFromAssets(this, filepath)
             if (outputString.isEmpty()) {
@@ -246,20 +235,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             Log.e("MainActivity", "Error reading JSON files [RACES]", e)
         }
 
+        // Addint Maps to viewmodel
         viewModelAthlete.setAthletesMap(AthletesMap)
         viewModelSlope.setSlopesMap(SlopesMap)
         viewModelAthlete.setCalendar(Calendar)
-        // add username to db
-//        user.displayName?.let {
-//            db.collection(firebaseAuth.currentUser!!.uid).document("UserInfo").set(
-//                it
-//            )
-//        }
-
-
-
     }
 
+    // Functions for navigation between fragments
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.nav_home -> replaceFragment(HomeFragment())

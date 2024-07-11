@@ -34,6 +34,7 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        // Logout button
         binding.signOutButton.setOnClickListener {
             AuthUI.getInstance()
                 .signOut(requireContext()!!)
@@ -42,16 +43,14 @@ class ProfileFragment : Fragment() {
                     startActivity(intent)
                 }
         }
+
+        // Form with user's credentials
         binding.userName.setText("Hi, "+ user.displayName)
         binding.editName.setText(user.displayName?: "")
         binding.editEmail.setText(user.email?: "")
         binding.buttonSubmit.setOnClickListener{
             UpdateMyProfile(view)
-
-
         }
-
-
     }
 
     private fun UpdateMyProfile(view: View?){
@@ -59,21 +58,21 @@ class ProfileFragment : Fragment() {
         val newName = binding.editName.text.toString().trim()
         val newEmail = binding.editEmail.text.toString().trim()
         val password = binding.editPassword.text.toString().trim()
-        // Input Checks: No empty field
+        // Input Security Checks: No empty field
         if(newName.isEmpty() || newEmail.isEmpty() || password.isEmpty()){
             Toast.makeText(requireContext(), "There are empty fields", Toast.LENGTH_SHORT).show()
             return
         }
-        // Input Checks: name validity
+        // Input Security Checks: name validity
         if(newName.split(" ").size < 2){
             Toast.makeText(requireContext(), "Enter a valid name", Toast.LENGTH_SHORT).show()
             return
         }
-        // Input Checks: email validity
+        // Input Security Checks: email validity
         if(!(Patterns.EMAIL_ADDRESS.matcher(newEmail).matches())){
             Toast.makeText(requireContext(), "Enter a valid email", Toast.LENGTH_SHORT).show()
         }
-        // Input Checks: password matching
+        // Input Security Checks: password matching
         val credential = EmailAuthProvider.getCredential(user.email!!, password)
         user.reauthenticate(credential)
             .addOnCompleteListener { authTask ->

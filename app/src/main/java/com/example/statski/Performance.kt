@@ -2,6 +2,10 @@ package com.example.statski
 
 import java.time.LocalDate
 
+// Class to manage all race data in which an athlete took part
+
+// Lots of the attribute will be used in thesis
+
 data class Performance(
     val position : String,
     val total_time : String,

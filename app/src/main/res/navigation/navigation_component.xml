@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_component">
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.statski.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_WCSlopesFragment"
+            app:destination="@id/WCSlopesFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_athletesFragment"
+            app:destination="@id/athletesFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/WCSlopesFragment"
+        android:name="com.example.statski.WCSlopesFragment"
+        android:label="WCSlopesFragment" />
+    <fragment
+        android:id="@+id/athletesFragment"
+        android:name="com.example.statski.AthletesFragment"
+        android:label="AthletesFragment" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.statski.ProfileFragment"
+        android:label="ProfileFragment" />
+</navigation>

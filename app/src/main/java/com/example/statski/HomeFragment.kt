@@ -21,6 +21,11 @@ import androidx.core.content.ContextCompat.getString
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.activityViewModels
 import com.example.statski.databinding.FragmentHomeBinding
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.firestore
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.Month
@@ -35,10 +40,10 @@ class HomeFragment : Fragment() {
     val viewModel_instance : AthletesViewModel by activityViewModels()
     private var Races_calendar = mutableListOf<Race>()
     private lateinit var alarmScheduler: AndroidAlarmScheduler
+    private lateinit var db : FirebaseFirestore
+    private lateinit var firebaseAuth : FirebaseAuth
+    private lateinit var user : FirebaseUser
 
-    companion object {
-        private const val NOTIFICATION_PERMISSION_CODE = 1001
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,8 +59,11 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Races_calendar = viewModel_instance.calendar
+        // Get Firebase instance
+        db = Firebase.firestore
+        firebaseAuth = FirebaseAuth.getInstance()
 
-
+        // Call functions to get the nearest races from today
         val WomenRace : Race? = FindNearestRaces(Races_calendar).first
         val MenRace : Race? = FindNearestRaces(Races_calendar).second
 
@@ -66,19 +74,36 @@ class HomeFragment : Fragment() {
         else{
             binding.middleText.text = "Upcoming races:"
         }
+
+        // Fill TextViews with nearest men's race and nearest women's race attributes
         binding.nextWomenRace.text = WomenRace?.race_type
         binding.whenNextRace.text = WomenRace?.date
-        binding.whereNextRace.text = "${WomenRace?.place}, ${WomenRace?.nation}"
+        binding.whereNextRaceWomen.text = "${WomenRace?.place}, ${WomenRace?.nation}"
+
+        binding.nextMenRace.text = MenRace?.race_type
+        binding.whenNextRaceMen.text = MenRace?.date
+        binding.whereNextRaceMen.text = "${MenRace?.place}, ${MenRace?.nation}"
 
         alarmScheduler = AndroidAlarmScheduler(requireContext())
 
+        // Set buttons for notifications
         binding.setNotify.setOnClickListener {
             if (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.POST_NOTIFICATIONS)
                 == PackageManager.PERMISSION_GRANTED) {
                 showNotification(WomenRace = true)
             } else {
-
+                Toast.makeText(requireContext(), "Please give notification permission", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        binding.notifyButtonMen.setOnClickListener{
+            if(ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.POST_NOTIFICATIONS)
+                == PackageManager.PERMISSION_GRANTED){
+                showNotification(WomenRace = false)
+            } else{
+                Toast.makeText(requireContext(), "Please give notification permission", Toast.LENGTH_SHORT).show()
+            }
+
         }
     }
 
@@ -86,13 +111,14 @@ class HomeFragment : Fragment() {
     private fun FindNearestRaces(calendar: MutableList<Race>): Pair<Race?, Race?> {
         val womenRaces = calendar.filter { it.race_type.contains("Women") }
         val menRaces = calendar.filter { it.race_type.contains("Men") }
-
+        // Divide men and women races
         val nearestWomenRace = findNearestRace(womenRaces)
         val nearestMenRace = findNearestRace(menRaces)
 
         return Pair(nearestWomenRace, nearestMenRace)
 
     }
+
     private fun findNearestRace(calendar: List<Race>): Race?{
         val today = LocalDate.now()
         var nearestRace: Race? = null
@@ -107,22 +133,29 @@ class HomeFragment : Fragment() {
         }
         return nearestRace
     }
+
     private fun daysBetween(date1: LocalDate, date2: LocalDate): Long{
         return ChronoUnit.DAYS.between(date1, date2)
     }
 
-
-
-
-    private fun showNotification(WomenRace: Boolean){
+    // Notification Manager
+    private fun showNotification(WomenRace: Boolean) {
         val race = if(WomenRace) FindNearestRaces(Races_calendar).first else FindNearestRaces(Races_calendar).second
         race?.let{
             val raceDate = LocalDate.parse(it.date).atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
             // For testing: substitute raceDate with a unix Value
             val alarmItem = AlarmItem(time = raceDate, race = it)
             alarmScheduler.schedule(alarmItem)
+            db = Firebase.firestore
+            if(WomenRace){
+                db.collection(firebaseAuth.currentUser!!.uid).document("WomenRaceLastAlarm").set(alarmItem)
+            }
+            else{
+                db.collection(firebaseAuth.currentUser!!.uid).document("MenRaceLastAlarm").set(alarmItem)
+            }
+
             Toast.makeText(requireContext(), "Notification set for ${it.race_type} on ${it.date}", Toast.LENGTH_SHORT).show()
         }
-//
+
     }
 }

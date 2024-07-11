@@ -82,6 +82,7 @@ class AthletesFragment : Fragment() {
     }
 }
 
+
 class AthleteAdapter(val context: Context, var athleteList: List<Athlete>) :
     RecyclerView.Adapter<AthleteAdapter.ViewHolder>() {
         inner class ViewHolder(val binding: ItemAthletesLayoutBinding): RecyclerView.ViewHolder(binding.root)
