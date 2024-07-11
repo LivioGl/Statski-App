@@ -21,7 +21,14 @@
     <fragment
         android:id="@+id/WCSlopesFragment"
         android:name="com.example.statski.WCSlopesFragment"
-        android:label="WCSlopesFragment" />
+        android:label="WCSlopesFragment" >
+        <action
+            android:id="@+id/action_WCSlopesFragment_to_profileFragment2"
+            app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_WCSlopesFragment_to_athletesFragment2"
+            app:destination="@id/athletesFragment" />
+    </fragment>
     <fragment
         android:id="@+id/athletesFragment"
         android:name="com.example.statski.AthletesFragment"
@@ -29,5 +36,9 @@
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.statski.ProfileFragment"
-        android:label="ProfileFragment" />
+        android:label="ProfileFragment" >
+        <action
+            android:id="@+id/action_profileFragment_to_athletesFragment"
+            app:destination="@id/athletesFragment" />
+    </fragment>
 </navigation>
