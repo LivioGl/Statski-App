@@ -2,7 +2,8 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/navigation_component">
+    android:id="@+id/navigation_component"
+    app:startDestination="@id/singleAthleteStats">
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.statski.HomeFragment"
@@ -32,13 +33,26 @@
     <fragment
         android:id="@+id/athletesFragment"
         android:name="com.example.statski.AthletesFragment"
-        android:label="AthletesFragment" />
+        android:label="AthletesFragment" >
+        <action
+            android:id="@+id/action_athletesFragment_to_singleAthleteStats"
+            app:destination="@id/singleAthleteStats" />
+    </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.statski.ProfileFragment"
         android:label="ProfileFragment" >
         <action
             android:id="@+id/action_profileFragment_to_athletesFragment"
+            app:destination="@id/athletesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/singleAthleteStats"
+        android:name="com.example.statski.SingleAthleteStats"
+        android:label="fragment_single_athlete_stats"
+        tools:layout="@layout/fragment_single_athlete_stats" >
+        <action
+            android:id="@+id/action_singleAthleteStats_to_athletesFragment"
             app:destination="@id/athletesFragment" />
     </fragment>
 </navigation>

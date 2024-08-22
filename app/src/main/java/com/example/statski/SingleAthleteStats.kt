@@ -5,17 +5,28 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
+import com.example.statski.databinding.FragmentAthletesBinding
+import com.example.statski.databinding.FragmentAthletesBindingImpl
+import com.example.statski.databinding.FragmentSingleAthleteStatsBinding
 
 class SingleAthleteStats : Fragment() {
 
-    // This Activity will be part of thesis
-
+    private lateinit var binding : FragmentSingleAthleteStatsBinding
+    val viewModel_instance : AthletesViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_single_athlete_stats, container, false)
+        binding = FragmentSingleAthleteStatsBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel_instance.selectedAthlete.observe(viewLifecycleOwner){
+            // athlete-> binding. [ID TEXT VIEW] athlete = athlete
+        }
     }
 }

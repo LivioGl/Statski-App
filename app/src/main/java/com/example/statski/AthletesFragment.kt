@@ -20,6 +20,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.statski.databinding.ItemAthletesLayoutBinding
 import java.util.Locale
 
@@ -50,7 +51,9 @@ class AthletesFragment : Fragment() {
         // Get Athlets list from ViewModel
         athletesList = viewModel_instance.athletesMap.values.toMutableList()
         Log.d("AthletesFragment", "Number of athletes: ${athletesList.size}")
+        // Adapter instance
         Athl_adapter = AthleteAdapter(requireContext(), athletesList)
+
         binding.rvAthletesList.adapter = Athl_adapter
 
         // SearchView Configuration
@@ -63,6 +66,17 @@ class AthletesFragment : Fragment() {
             override fun onQueryTextChange(newText: String?): Boolean {
                 filterList(newText)
                 return true
+            }
+        })
+        // Override the item click method to open the new fragment
+        Athl_adapter.setOnItemClickListener(object : AthleteAdapter.OnItemClickListener{
+            override fun OnItemClick(position: Int){
+                // Handling item click
+                val athlete = athletesList[position]
+                Toast.makeText(requireContext(), "Clicked on ${athlete.name}", Toast.LENGTH_SHORT).show()
+                // Get the athlete which user chose
+                viewModel_instance.selectAthlete(athlete)
+                findNavController().navigate(R.id.action_athletesFragment_to_singleAthleteStats)
             }
         })
 
@@ -80,6 +94,8 @@ class AthletesFragment : Fragment() {
             }
         } else Athl_adapter.setFilteredList(athletesList)
     }
+
+
 }
 
 
@@ -105,10 +121,27 @@ class AthleteAdapter(val context: Context, var athleteList: List<Athlete>) :
         holder.binding.natId.text = athlete.nation
         holder.binding.year.text = athlete.birth.toString()
         holder.binding.executePendingBindings()
+
+        // Item click manage
+        holder.itemView.setOnClickListener{
+            onItemClickListener?.OnItemClick(position)
+        }
     }
     override fun getItemCount(): Int {
         return athleteList.size
     }
+
+    // Interface for item click
+    interface OnItemClickListener{
+            fun OnItemClick(position: Int)
+    }
+
+    private var onItemClickListener: OnItemClickListener? = null
+
+    fun setOnItemClickListener(onItemClickListener: OnItemClickListener){
+        this.onItemClickListener = onItemClickListener
+    }
+
 }
 
 
