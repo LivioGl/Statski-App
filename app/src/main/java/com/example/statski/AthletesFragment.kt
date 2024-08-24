@@ -18,6 +18,7 @@ import com.google.android.material.tabs.TabLayout.LabelVisibility
 import androidx.activity.viewModels
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -73,10 +74,15 @@ class AthletesFragment : Fragment() {
             override fun OnItemClick(position: Int){
                 // Handling item click
                 val athlete = athletesList[position]
-                Toast.makeText(requireContext(), "Clicked on ${athlete.name}", Toast.LENGTH_SHORT).show()
+
+                //Toast.makeText(requireContext(), "Clicked on ${athlete.name}", Toast.LENGTH_SHORT).show()
                 // Get the athlete which user chose
                 viewModel_instance.selectAthlete(athlete)
-                findNavController().navigate(R.id.action_athletesFragment_to_singleAthleteStats)
+                Log.d("AthletesFragment", "Athlete picked: ${athlete}")
+
+                val transaction:FragmentTransaction = activity!!.supportFragmentManager.beginTransaction()
+                transaction.replace(R.id.fragment_container, SingleAthleteStats())
+                transaction.commit()
             }
         })
 

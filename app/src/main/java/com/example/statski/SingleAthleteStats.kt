@@ -6,8 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import com.example.statski.databinding.FragmentAthletesBinding
-import com.example.statski.databinding.FragmentAthletesBindingImpl
 import com.example.statski.databinding.FragmentSingleAthleteStatsBinding
 
 class SingleAthleteStats : Fragment() {
@@ -25,8 +23,8 @@ class SingleAthleteStats : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel_instance.selectedAthlete.observe(viewLifecycleOwner){
-            // athlete-> binding. [ID TEXT VIEW] athlete = athlete
-        }
+
+            binding.athleteName.text = viewModel_instance.selectedAthlete.value!!.name
+
     }
 }
