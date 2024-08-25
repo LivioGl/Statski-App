@@ -31,9 +31,6 @@ class AlarmReceiver : BroadcastReceiver() {
         if (builder != null) {
             notificationManager.notify(message.hashCode(), builder.build())
         }
-//        with(NotificationManagerCompat.from(context)) {
-//            notify(message.hashCode(), builder.build())
-//        }
 
     }
 }

@@ -71,11 +71,9 @@ class AthletesFragment : Fragment() {
         })
         // Override the item click method to open the new fragment
         Athl_adapter.setOnItemClickListener(object : AthleteAdapter.OnItemClickListener{
-            override fun OnItemClick(position: Int){
+            override fun OnItemClick(athlete: Athlete){
                 // Handling item click
-                val athlete = athletesList[position]
 
-                //Toast.makeText(requireContext(), "Clicked on ${athlete.name}", Toast.LENGTH_SHORT).show()
                 // Get the athlete which user chose
                 viewModel_instance.selectAthlete(athlete)
                 Log.d("AthletesFragment", "Athlete picked: ${athlete}")
@@ -130,7 +128,7 @@ class AthleteAdapter(val context: Context, var athleteList: List<Athlete>) :
 
         // Item click manage
         holder.itemView.setOnClickListener{
-            onItemClickListener?.OnItemClick(position)
+            onItemClickListener?.OnItemClick(athlete)
         }
     }
     override fun getItemCount(): Int {
@@ -139,7 +137,7 @@ class AthleteAdapter(val context: Context, var athleteList: List<Athlete>) :
 
     // Interface for item click
     interface OnItemClickListener{
-            fun OnItemClick(position: Int)
+            fun OnItemClick(athlete: Athlete)
     }
 
     private var onItemClickListener: OnItemClickListener? = null

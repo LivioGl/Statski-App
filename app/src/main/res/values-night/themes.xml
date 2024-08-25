@@ -2,6 +2,9 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.Statski" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
+        <item name="colorPrimary">#448AFF</item>
+        <item name="colorPrimaryVariant">#448AFF</item>
+        <item name="android:statusBarColor">#448AFF</item>
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
     </style>
 </resources>

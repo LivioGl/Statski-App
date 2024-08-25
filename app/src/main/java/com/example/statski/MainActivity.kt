@@ -239,6 +239,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         viewModelAthlete.setAthletesMap(AthletesMap)
         viewModelSlope.setSlopesMap(SlopesMap)
         viewModelAthlete.setCalendar(Calendar)
+        Log.d("MainActivity", "Gare di Sofia Goggia: ${AthletesMap["GOGGIA Sofia"]?.performance_list}")
     }
 
     // Functions for navigation between fragments

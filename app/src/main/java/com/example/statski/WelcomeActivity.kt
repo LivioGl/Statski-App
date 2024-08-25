@@ -54,6 +54,7 @@ class WelcomeActivity : AppCompatActivity() {
         val signInIntent = AuthUI.getInstance()
             .createSignInIntentBuilder()
             .setAvailableProviders(providers)
+            .setLogo(R.drawable.statskilogo)
             .build()
         signInLauncher.launch(signInIntent)
 
