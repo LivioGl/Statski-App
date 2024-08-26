@@ -1,4 +1,5 @@
 package com.example.statski
+import java.io.Serializable
 
 import java.time.LocalDate
 
@@ -15,4 +16,4 @@ data class Performance(
     val place : String,
     val date : String,
     val category : String
-)
+): Serializable

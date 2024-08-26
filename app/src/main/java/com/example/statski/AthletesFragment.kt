@@ -1,6 +1,7 @@
 package com.example.statski
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -18,11 +19,13 @@ import com.google.android.material.tabs.TabLayout.LabelVisibility
 import androidx.activity.viewModels
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
+import org.json.JSONArray
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.statski.databinding.ItemAthletesLayoutBinding
+import com.google.gson.Gson
 import java.util.Locale
 
 class AthletesFragment : Fragment() {
@@ -78,9 +81,14 @@ class AthletesFragment : Fragment() {
                 viewModel_instance.selectAthlete(athlete)
                 Log.d("AthletesFragment", "Athlete picked: ${athlete}")
 
-                val transaction:FragmentTransaction = activity!!.supportFragmentManager.beginTransaction()
-                transaction.replace(R.id.fragment_container, SingleAthleteStats())
-                transaction.commit()
+                val athlete_picked = Gson().toJson(athlete)
+                val intent = Intent(activity, AthleteStats::class.java)
+                intent.putExtra("athlete_picked", athlete_picked)
+                startActivity(intent)
+
+//                val transaction:FragmentTransaction = activity!!.supportFragmentManager.beginTransaction()
+//                transaction.replace(R.id.fragment_container, SingleAthleteStats())
+//                transaction.commit()
             }
         })
 

@@ -60,6 +60,7 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore-ktx:25.0.0")
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("androidx.recyclerview:recyclerview-selection:1.1.0")
+    implementation("com.google.code.gson:gson:2.8.9")
     val lifecycle_version = "2.7.0"
     val activity_version = "1.8.2"
     val nav_version = "2.7.7"
