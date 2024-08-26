@@ -31,6 +31,8 @@ class AthleteStats : AppCompatActivity() {
 
         if (current_athlete != null){
             binding.title.text = current_athlete.name
+            binding.nation.text = current_athlete.nation
+            binding.birth.text = current_athlete.birth.toString()
         }
 
         val backButton = binding.backButton
