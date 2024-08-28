@@ -37,9 +37,32 @@ class AthleteStats : AppCompatActivity() {
         val current_athlete : Athlete = Gson.fromJson(athlete_picked, Athlete::class.java)
 
         if (current_athlete != null){
+            // Filling name, nation and birth textviews
             binding.title.text = current_athlete.name
             binding.nation.text = current_athlete.nation
             binding.birth.text = current_athlete.birth.toString()
+
+            // Filling victories, podiums and total points textviews
+            // If an athlete has no victories or podiums, these data are replaced with top5 and top10
+            val victories = current_athlete.CountVictories()
+            if(victories == 0){
+                val top5 = current_athlete.CountTop5()
+                binding.victories.text = top5.toString()+" Top5"
+            } else{
+                binding.victories.text = victories.toString()+" victories"
+            }
+
+            val podiums = current_athlete.CountPodiums()
+            if(podiums == 0){
+                val top10 = current_athlete.CountTop10()
+                binding.podiums.text = top10.toString()+" Top10"
+            }
+            else{
+                binding.podiums.text = podiums.toString()+" podiums"
+            }
+            val points = current_athlete.SumPoints()
+            binding.totalPoints.text = points.toString()+" career points"
+
 
             val mostRecentPerformance = current_athlete.getMostRecentPerformanceDate()
             if (mostRecentPerformance != null){

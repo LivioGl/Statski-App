@@ -72,13 +72,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_main)
         drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
 
-        // Back button in AthleteStats takes here. If no fragments are opened, the navigation is given to AthletesFragment
-//        if(savedInstanceState == null){
-//            val fragment = AthletesFragment()
-//            supportFragmentManager.beginTransaction()
-//                .replace(R.id.fragment_container, fragment)
-//                .commit()
-//        }
 
         // Setting up toolbar and navigation drawer
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
