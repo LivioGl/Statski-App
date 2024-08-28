@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="8dp"
-            app:cardElevation="12dp"
+            app:cardElevation="5dp"
             app:cardUseCompatPadding="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -48,7 +48,55 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/materialCardView"
-            android:layout_marginTop="10dp" />
+            android:layout_marginTop="55dp" />
+
+        <ImageButton
+            android:id="@+id/delete_filter"
+            android:layout_width="62dp"
+            android:layout_height="56dp"
+            android:layout_below="@+id/materialCardView"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="0dp"
+            android:backgroundTintMode="screen"
+            app:srcCompat="@drawable/baseline_delete_24"
+
+            />
+
+        <CheckBox
+            android:id="@+id/sort_surname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/materialCardView"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="3dp"
+            android:layout_toEndOf="@+id/delete_filter"
+            android:text="Sort by name" />
+
+        <RadioGroup
+            android:id="@+id/sort_buttons_age"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/materialCardView"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="3dp"
+            android:layout_toEndOf="@+id/sort_surname"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/year_down"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Sort by younger" />
+
+            <RadioButton
+                android:id="@+id/year_up"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Sort by older" />
+        </RadioGroup>
 
     </RelativeLayout>
 </layout>

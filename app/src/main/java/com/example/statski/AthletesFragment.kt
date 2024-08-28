@@ -35,6 +35,7 @@ class AthletesFragment : Fragment() {
     val viewModel_instance : AthletesViewModel by activityViewModels()
     private var athletesList = mutableListOf<Athlete>()
     private lateinit var Athl_adapter: AthleteAdapter
+    private var currentFilterText: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -68,10 +69,27 @@ class AthletesFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
+                currentFilterText = newText
                 filterList(newText)
                 return true
             }
         })
+         //[Thesis] Onclicklistener for radio buttons
+        binding.sortSurname.setOnCheckedChangeListener {_, isChecked->
+            SortAthletes()
+        }
+
+        binding.sortButtonsAge.setOnCheckedChangeListener { _, checkedId ->
+            SortAthletes()
+        }
+
+        binding.deleteFilter.setOnClickListener{
+            clearFilters()
+        }
+
+
+
+
         // Override the item click method to open the new fragment
         Athl_adapter.setOnItemClickListener(object : AthleteAdapter.OnItemClickListener{
             override fun OnItemClick(athlete: Athlete){
@@ -86,9 +104,6 @@ class AthletesFragment : Fragment() {
                 intent.putExtra("athlete_picked", athlete_picked)
                 startActivity(intent)
 
-//                val transaction:FragmentTransaction = activity!!.supportFragmentManager.beginTransaction()
-//                transaction.replace(R.id.fragment_container, SingleAthleteStats())
-//                transaction.commit()
             }
         })
 
@@ -107,6 +122,56 @@ class AthletesFragment : Fragment() {
         } else Athl_adapter.setFilteredList(athletesList)
     }
 
+
+
+
+    // [Thesis] Sorting athletes by name, year up or year down
+    private fun SortAthletes(){
+
+        val filteredList = if(currentFilterText.isNullOrEmpty()){
+            athletesList
+        } else{
+            athletesList.filter{athlete->
+                athlete.name.lowercase(Locale.getDefault()).contains(currentFilterText!!.lowercase(Locale.getDefault()))
+            }
+        }
+
+        val sortByName = binding.sortSurname.isChecked
+        val sortByYearAscending = binding.sortButtonsAge.checkedRadioButtonId == R.id.year_up
+        val sortByYearDescending = binding.sortButtonsAge.checkedRadioButtonId == R.id.year_down
+
+        val currentList = Athl_adapter.athleteList
+
+        val sortedList = when{
+            sortByName && sortByYearAscending -> {
+                currentList.sortedWith(compareBy<Athlete> {it.birth}.thenBy { it.name })
+            }
+            sortByName && sortByYearDescending ->{
+                currentList.sortedWith(compareByDescending<Athlete> {it.birth}.thenBy{it.name})
+            }
+            sortByYearAscending->{
+                currentList.sortedBy { it.birth }
+            }
+            sortByYearDescending->{
+                currentList.sortedByDescending { it.birth }
+            }
+            sortByName->{
+                currentList.sortedBy { it.name }
+            }
+
+            else -> currentList
+        }
+        Athl_adapter.setFilteredList(sortedList)
+    }
+
+    // [Thesis] Remove filters added on AthleteList
+    private fun clearFilters(){
+        binding.sortSurname.isChecked = false
+        binding.sortButtonsAge.clearCheck()
+
+        filterList(currentFilterText)
+
+    }
 
 }
 

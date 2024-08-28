@@ -1,5 +1,7 @@
 package com.example.statski
 
+import java.time.LocalDate
+
 data class Athlete(
     val name: String,
     val nation: String,
@@ -7,4 +9,9 @@ data class Athlete(
 
     ){
     val performance_list = mutableListOf<Performance>()
+    fun getMostRecentPerformanceDate(): LocalDate? {
+        return performance_list
+            .map { it.getDateAsLocalDate() }
+            .maxOrNull()
+    }
 }
