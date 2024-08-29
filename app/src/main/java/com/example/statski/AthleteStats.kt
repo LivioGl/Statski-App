@@ -13,10 +13,14 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.FragmentTransaction
 import com.example.statski.databinding.ActivityAthleteStatsBinding
+import com.google.android.gms.fitness.data.DataPoint
 import com.google.gson.Gson
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale
+
+
+
 @RequiresApi(Build.VERSION_CODES.O)
 class AthleteStats : AppCompatActivity() {
     lateinit var binding : ActivityAthleteStatsBinding
@@ -61,13 +65,22 @@ class AthleteStats : AppCompatActivity() {
                 binding.podiums.text = podiums.toString()+" podiums"
             }
             val points = current_athlete.SumPoints()
-            binding.totalPoints.text = points.toString()+" career points"
+            binding.totalPoints.text = points.toString()+" points"
 
 
             val mostRecentPerformance = current_athlete.getMostRecentPerformanceDate()
             if (mostRecentPerformance != null){
                 binding.lastRace.text = "Last race: "+mostRecentPerformance.toString()
             }
+            // Setting linechart
+//            val last5 = current_athlete.GetLastFiveRaces(current_athlete.performance_list)
+//            val DataPoints = last5.mapIndexed{index, perfomance ->
+//                com.db.williamchart.data.DataPoint(
+//                    index.toFloat().toString(),
+//                    perfomance.position.toFloat()
+//                )
+//            }
+//            binding.LineChart.lineThickness = 4F
 
         }
 

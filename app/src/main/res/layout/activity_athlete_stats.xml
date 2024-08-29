@@ -30,9 +30,9 @@
         android:fontFamily="@font/ralewaybold"
         android:maxWidth="250dp"
         android:maxHeight="200dp"
+        android:maxLines="1"
         android:paddingLeft="35dp"
         android:paddingRight="10dp"
-        android:maxLines="1"
         android:text="TextView"
         android:textSize="30sp"
         android:textStyle="bold"
@@ -49,23 +49,25 @@
         android:id="@+id/birth"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="76dp"
-        android:layout_marginEnd="36dp"
-        android:text="Birth"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="12dp"
         android:fontFamily="@font/ralewaybold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="Birth"
+        android:textSize="18dp"
+        app:layout_constraintStart_toEndOf="@+id/nation"
+        app:layout_constraintTop_toBottomOf="@+id/back_button" />
 
     <TextView
         android:id="@+id/nation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="76dp"
-        android:layout_marginEnd="28dp"
-        android:text="Nation"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="12dp"
         android:fontFamily="@font/ralewaybold"
-        app:layout_constraintEnd_toStartOf="@+id/birth"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="Nation"
+        android:textSize="18dp"
+        app:layout_constraintStart_toEndOf="@+id/last_race"
+        app:layout_constraintTop_toBottomOf="@+id/back_button" />
 
     <TextView
         android:id="@+id/last_race"
@@ -73,32 +75,24 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
-        android:text="TextView"
-        android:fontFamily="@font/ralewaybold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/back_button" />
-
-    <TextView
-        android:id="@+id/victories"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         android:fontFamily="@font/ralewaybold"
         android:text="TextView"
         android:textSize="18dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/last_race" />
+        app:layout_constraintTop_toBottomOf="@+id/back_button" />
 
     <TextView
         android:id="@+id/podiums"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="42dp"
+        android:layout_marginTop="56dp"
         android:fontFamily="@font/ralewaybold"
         android:text="TextView"
+        android:textAlignment="center"
         android:textSize="18dp"
+        app:layout_constraintEnd_toStartOf="@+id/total_points"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/victories"
         app:layout_constraintTop_toBottomOf="@+id/last_race" />
 
@@ -106,13 +100,59 @@
         android:id="@+id/total_points"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="42dp"
+        android:layout_marginTop="56dp"
+        android:layout_marginEnd="50dp"
         android:fontFamily="@font/ralewaybold"
         android:text="TextView"
+        android:textAlignment="center"
         android:textSize="18dp"
+        app:autoSizeMaxTextSize="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/podiums"
+        app:layout_constraintTop_toBottomOf="@+id/birth" />
+
+    <TextView
+        android:id="@+id/victories"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="56dp"
+        android:fontFamily="@font/ralewaybold"
+        android:text="TextView"
+        android:textAlignment="center"
+        android:textSize="18dp"
+        app:layout_constraintEnd_toStartOf="@+id/podiums"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/victories" />
+        app:layout_constraintTop_toBottomOf="@+id/last_race" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="160dp"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="@font/ralewaybolditalic"
+        android:text="Career data"
+        android:textSize="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/podiums"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.db.williamchart.view.LineChartView
+        android:id="@+id/LineChart"
+        android:layout_width="341dp"
+        android:layout_height="157dp"
+        android:layout_marginStart="35dp"
+
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="35dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/podiums">
+
+    </com.db.williamchart.view.LineChartView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

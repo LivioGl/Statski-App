@@ -1,6 +1,8 @@
 package com.example.statski
 
+import java.text.SimpleDateFormat
 import java.time.LocalDate
+import java.util.Locale
 
 data class Athlete(
     val name: String,
@@ -15,6 +17,16 @@ data class Athlete(
         return performance_list
             .map { it.getDateAsLocalDate() }
             .maxOrNull()
+    }
+
+    // Get last 5 races
+    fun GetLastFiveRaces(performance: List<Performance>): List<Performance>{
+        val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale.ENGLISH)
+
+        val sortedPerformance = performance.sortedByDescending { performance ->
+            dateFormat.parse(performance.date)
+        }
+        return sortedPerformance.take(5)
     }
 
     // Get number of victories
