@@ -249,6 +249,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_home -> replaceFragment(HomeFragment())
             R.id.wc_slopes -> replaceFragment(WCSlopesFragment())
             R.id.athletes -> replaceFragment(AthletesFragment())
+            // Fragment for athletes comparison
             R.id.logout -> replaceFragment(ProfileFragment())
         }
         drawerLayout.closeDrawer(GravityCompat.START)

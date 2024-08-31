@@ -5,6 +5,10 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
@@ -13,18 +17,25 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.FragmentTransaction
 import com.example.statski.databinding.ActivityAthleteStatsBinding
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.components.YAxis
 import com.google.android.gms.fitness.data.DataPoint
 import com.google.gson.Gson
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale
-
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.formatter.ValueFormatter
+import java.text.SimpleDateFormat
 
 
 @RequiresApi(Build.VERSION_CODES.O)
 class AthleteStats : AppCompatActivity() {
     lateinit var binding : ActivityAthleteStatsBinding
-    //val viewModel_instance : AthletesViewModel by viewModels()
+    private lateinit var currentAthlete: Athlete
+
 
 
     @SuppressLint("SetTextI18n")
@@ -35,10 +46,15 @@ class AthleteStats : AppCompatActivity() {
         enableEdgeToEdge()
 
 
+
         val bundle : Bundle? = intent.extras
         val athlete_picked = bundle!!.getString("athlete_picked")
         val Gson = Gson()
         val current_athlete : Athlete = Gson.fromJson(athlete_picked, Athlete::class.java)
+
+
+
+
 
         if (current_athlete != null){
             // Filling name, nation and birth textviews
@@ -73,22 +89,127 @@ class AthleteStats : AppCompatActivity() {
                 binding.lastRace.text = "Last race: "+mostRecentPerformance.toString()
             }
             // Setting linechart
-//            val last5 = current_athlete.GetLastFiveRaces(current_athlete.performance_list)
-//            val DataPoints = last5.mapIndexed{index, perfomance ->
-//                com.db.williamchart.data.DataPoint(
-//                    index.toFloat().toString(),
-//                    perfomance.position.toFloat()
-//                )
-//            }
-//            binding.LineChart.lineThickness = 4F
+            val last5 = current_athlete.GetLastFiveRaces(current_athlete.performance_list)
 
-        }
+            val entries = mutableListOf<Entry>()
+            for((index, performance) in last5.withIndex()){
+                performance.cup_points.toFloatOrNull()?.let{
+                    entries.add(Entry(index.toFloat(), it))
+                }
+            }
+
 
         val backButton = binding.backButton
         backButton.setOnClickListener{
             finish()
         }
+
+
+        // Spinner and Dataset changes
+        val options = arrayOf("All race types", "Downhill", "Super G", "Giant Slalom", "Slalom", "Alpine Combined")
+        val adapter = ArrayAdapter(
+            this,
+            android.R.layout.simple_spinner_item,
+            options
+        )
+        val spinner = binding.selectCategory
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner.adapter = adapter
+        // Setting default spinner element
+        spinner.setSelection(0)
+        // Handling spinner item to update dataset
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(parent : AdapterView<*>, view: View, position: Int, id: Long){
+                val selectedCategory = options[position]
+                val filteredPerformance : List<Performance> = when(selectedCategory){
+                    "All race types" -> current_athlete.GetLastFiveRaces(current_athlete.performance_list)
+                    else -> current_athlete.filterPerformanceByCategory(selectedCategory)
+                }
+                updateLineChart(filteredPerformance)
+            }
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // Nothing to do
+            }
+        }
+        }
+
     }
+    private fun updateLineChart(performanceList: List<Performance>) {
 
 
+        // Ordina le performance per data e seleziona le ultime 5
+        val sortedPerformanceList = performanceList.sortedByDescending { performance ->
+            SimpleDateFormat("MMMM dd, yyyy", Locale.ENGLISH).parse(performance.date)
+        }.take(5)
+
+        val categoryMap = mapOf(
+            "Women's Super G" to "SG", "Men's Super G" to "SG",
+            "Men's Downhill" to "DH", "Women's Downhill" to "DH",
+            "Women's Alpine combined" to "AC", "Men's Alpine combined" to "AC",
+            "Men's Slalom" to "SL", "Women's Slalom" to "SL",
+            "Men's Giant Slalom" to "GS", "Women's Giant Slalom" to "GS"
+        )
+        if (sortedPerformanceList.isEmpty()) {
+            Toast.makeText(this, "No races available for the selected category", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Creazione degli entry per il LineDataSet
+        val entries = sortedPerformanceList.mapIndexed { index, performance ->
+            performance.cup_points.toFloatOrNull()?.let {
+                Entry(index.toFloat(), it)
+            }
+        }.filterNotNull()
+
+        // Creazione e configurazione del LineDataSet
+        val dataSet = LineDataSet(entries, "Points scored in the last 5 races").apply {
+            axisDependency = YAxis.AxisDependency.LEFT
+            color = resources.getColor(R.color.blue, null)
+            valueTextColor = resources.getColor(R.color.black, null)
+            lineWidth = 2f
+            setDrawCircles(true)
+            setDrawValues(true)
+            valueFormatter = object : ValueFormatter() {
+                override fun getFormattedValue(value: Float): String {
+                    return value.toInt().toString()
+                }
+            }
+            setValueTextSize(14f)
+        }
+
+        // Aggiornamento del grafico con il nuovo dataset
+        binding.linechart.data = LineData(dataSet)
+
+        // Configurazione dell'asse X per visualizzare le categorie abbreviate
+        val categories = performanceList.map { it.category }
+        val xAxisFormatter = object : ValueFormatter() {
+            override fun getFormattedValue(value: Float): String {
+                val index = value.toInt()
+                return if (index >= 0 && index < categories.size) {
+                    categoryMap[categories[index]] ?: ""
+                } else {
+                    ""
+                }
+            }
+        }
+
+        binding.linechart.xAxis.apply {
+            position = XAxis.XAxisPosition.BOTTOM
+            granularity = 1f
+            setDrawGridLines(false)
+            valueFormatter = xAxisFormatter
+            textSize = 14f
+        }
+
+        // Configurazione dell'asse Y
+        binding.linechart.axisLeft.apply {
+            setDrawGridLines(true)
+            axisMinimum = 0f
+            textSize = 14f
+        }
+        binding.linechart.axisRight.isEnabled = false
+        binding.linechart.description.isEnabled = false
+        // Invalida e ridisegna il grafico con i nuovi dati
+        binding.linechart.invalidate()
+    }
 }

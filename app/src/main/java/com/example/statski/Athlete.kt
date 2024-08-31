@@ -29,6 +29,25 @@ data class Athlete(
         return sortedPerformance.take(5)
     }
 
+    // Get last 5 races, based on category
+    fun filterPerformanceByCategory(category: String): List<Performance> {
+        return when (category){
+            "Downhill" -> performance_list.filter{it.category == "Men's Downhill" || it.category == "Women's Downhill"}
+            "Super G" -> performance_list.filter{it.category == "Men's Super G" || it.category == "Women's Super G"}
+            "Giant Slalom" -> performance_list.filter{it.category == "Men's Giant Slalom" || it.category == "Women's Giant Slalom"}
+            "Slalom" -> performance_list.filter{it.category == "Men's Slalom" || it.category == "Women's Slalom"}
+            "Alpine Combined"-> performance_list.filter{it.category == "Men's Alpine combined" || it.category == "Women's Alpine combined"}
+
+            else -> {
+                emptyList<Performance>()
+            }
+        }
+
+
+    }
+
+
+
     // Get number of victories
     fun CountVictories(): Int{
         return performance_list.count{it.position == "1"}

@@ -4,9 +4,13 @@ plugins {
     alias(libs.plugins.google.gms.google.services)
 }
 
+
+
 android {
     namespace = "com.example.statski"
     compileSdk = 34
+
+
 
     defaultConfig {
         applicationId = "com.example.statski"
@@ -40,9 +44,9 @@ android {
     }
 }
 
+
 dependencies {
 
-    implementation ("com.diogobernardino:williamchart:3.11.0")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -74,5 +78,6 @@ dependencies {
     implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.4.0")
     implementation("androidx.activity:activity-ktx:$activity_version")
     implementation("androidx.databinding:databinding-runtime:8.3.1")
+    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
 }
