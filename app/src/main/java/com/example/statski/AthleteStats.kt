@@ -91,8 +91,10 @@ class AthleteStats : AppCompatActivity() {
             // Setting linechart
             val last5 = current_athlete.GetLastFiveRaces(current_athlete.performance_list)
 
+
             val entries = mutableListOf<Entry>()
             for((index, performance) in last5.withIndex()){
+
                 performance.cup_points.toFloatOrNull()?.let{
                     entries.add(Entry(index.toFloat(), it))
                 }
@@ -156,10 +158,11 @@ class AthleteStats : AppCompatActivity() {
 
         // Creazione degli entry per il LineDataSet
         val entries = sortedPerformanceList.mapIndexed { index, performance ->
-            performance.cup_points.toFloatOrNull()?.let {
-                Entry(index.toFloat(), it)
-            }
+            val cupPoints = performance.cup_points.toFloatOrNull() ?: 0f
+            Entry(index.toFloat(), cupPoints)
+
         }.filterNotNull()
+
 
         // Creazione e configurazione del LineDataSet
         val dataSet = LineDataSet(entries, "Points scored in the last 5 races").apply {
@@ -171,7 +174,7 @@ class AthleteStats : AppCompatActivity() {
             setDrawValues(true)
             valueFormatter = object : ValueFormatter() {
                 override fun getFormattedValue(value: Float): String {
-                    return value.toInt().toString()
+                    return (value).toInt().toString()
                 }
             }
             setValueTextSize(14f)
@@ -181,7 +184,7 @@ class AthleteStats : AppCompatActivity() {
         binding.linechart.data = LineData(dataSet)
 
         // Configurazione dell'asse X per visualizzare le categorie abbreviate
-        val categories = performanceList.map { it.category }
+        val categories = sortedPerformanceList.map { it.category }
         val xAxisFormatter = object : ValueFormatter() {
             override fun getFormattedValue(value: Float): String {
                 val index = value.toInt()
@@ -199,6 +202,7 @@ class AthleteStats : AppCompatActivity() {
             setDrawGridLines(false)
             valueFormatter = xAxisFormatter
             textSize = 14f
+
         }
 
         // Configurazione dell'asse Y
@@ -206,6 +210,7 @@ class AthleteStats : AppCompatActivity() {
             setDrawGridLines(true)
             axisMinimum = 0f
             textSize = 14f
+            axisMinimum = 0f
         }
         binding.linechart.axisRight.isEnabled = false
         binding.linechart.description.isEnabled = false
