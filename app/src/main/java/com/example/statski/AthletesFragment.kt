@@ -8,23 +8,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RelativeLayout
-import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.statski.databinding.FragmentAthletesBinding
-import com.google.android.material.tabs.TabLayout.LabelVisibility
-import androidx.activity.viewModels
 import androidx.appcompat.widget.SearchView
-import androidx.databinding.DataBindingUtil
-import org.json.JSONArray
-import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import com.example.statski.databinding.ItemAthletesLayoutBinding
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.firestore
 import com.google.gson.Gson
 import java.util.Locale
 
@@ -36,17 +31,78 @@ class AthletesFragment : Fragment() {
     private var athletesList = mutableListOf<Athlete>()
     private lateinit var Athl_adapter: AthleteAdapter
     private var currentFilterText: String? = null
+    private lateinit var db : FirebaseFirestore
+    private lateinit var firebaseAuth : FirebaseAuth
+    private lateinit var user : FirebaseUser
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        db = Firebase.firestore
+        firebaseAuth = FirebaseAuth.getInstance()
+
+        // Checking if there are already fav athletes
+        db.collection(firebaseAuth.currentUser!!.uid).document("Favourite Athletes").get()
+            .addOnSuccessListener {
+                    result->
+                val favAthletesList = result.toObject(mutableMapOf<String, String>()::class.java)?: mutableMapOf<String, String>()
+
+                // Adapter instance
+                Athl_adapter = AthleteAdapter(requireContext(), athletesList, favAthletesList)
+                binding.rvAthletesList.adapter = Athl_adapter
+                // Override the item click method to open the new fragment
+                Athl_adapter.setOnItemClickListener(object : AthleteAdapter.OnItemClickListener{
+                    override fun OnItemClick(athlete: Athlete){
+                        // Handling item click
+
+                        // Get the athlete which user chose
+                        viewModel_instance.selectAthlete(athlete)
+                        Log.d("AthletesFragment", "Athlete picked: ${athlete}")
+
+                        val athlete_picked = Gson().toJson(athlete)
+                        val intent = Intent(activity, AthleteStats::class.java)
+                        intent.putExtra("athlete_picked", athlete_picked)
+                        startActivity(intent)
+
+                    }
+                })
+
+
+            }
+            .addOnFailureListener{
+                Athl_adapter = AthleteAdapter(requireContext(), athletesList, mutableMapOf<String, String>())
+                binding.rvAthletesList.adapter = Athl_adapter
+                // Override the item click method to open the new fragment
+                Athl_adapter.setOnItemClickListener(object : AthleteAdapter.OnItemClickListener{
+                    override fun OnItemClick(athlete: Athlete){
+                        // Handling item click
+
+                        // Get the athlete which user chose
+                        viewModel_instance.selectAthlete(athlete)
+                        Log.d("AthletesFragment", "Athlete picked: ${athlete}")
+
+                        val athlete_picked = Gson().toJson(athlete)
+                        val intent = Intent(activity, AthleteStats::class.java)
+                        intent.putExtra("athlete_picked", athlete_picked)
+                        startActivity(intent)
+
+                    }
+                })
+
+
+            }
+
         binding = FragmentAthletesBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel_instance
-        return binding.root
 
+        return binding.root
     }
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d("AthletesFragment", "Fragment view created")
@@ -56,10 +112,7 @@ class AthletesFragment : Fragment() {
         // Get Athlets list from ViewModel
         athletesList = viewModel_instance.athletesMap.values.toMutableList()
         Log.d("AthletesFragment", "Number of athletes: ${athletesList.size}")
-        // Adapter instance
-        Athl_adapter = AthleteAdapter(requireContext(), athletesList)
 
-        binding.rvAthletesList.adapter = Athl_adapter
 
         // SearchView Configuration
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
@@ -86,26 +139,6 @@ class AthletesFragment : Fragment() {
         binding.deleteFilter.setOnClickListener{
             clearFilters()
         }
-
-
-
-
-        // Override the item click method to open the new fragment
-        Athl_adapter.setOnItemClickListener(object : AthleteAdapter.OnItemClickListener{
-            override fun OnItemClick(athlete: Athlete){
-                // Handling item click
-
-                // Get the athlete which user chose
-                viewModel_instance.selectAthlete(athlete)
-                Log.d("AthletesFragment", "Athlete picked: ${athlete}")
-
-                val athlete_picked = Gson().toJson(athlete)
-                val intent = Intent(activity, AthleteStats::class.java)
-                intent.putExtra("athlete_picked", athlete_picked)
-                startActivity(intent)
-
-            }
-        })
 
     }
     // Filter field
@@ -173,12 +206,16 @@ class AthletesFragment : Fragment() {
 
     }
 
+
+
 }
 
 
-class AthleteAdapter(val context: Context, var athleteList: List<Athlete>) :
+class AthleteAdapter(val context: Context, var athleteList: List<Athlete>, var favList : MutableMap<String, String>) :
     RecyclerView.Adapter<AthleteAdapter.ViewHolder>() {
         inner class ViewHolder(val binding: ItemAthletesLayoutBinding): RecyclerView.ViewHolder(binding.root)
+
+
 
     fun setFilteredList(ListAthletes : List<Athlete>){
         this.athleteList = ListAthletes
@@ -193,16 +230,41 @@ class AthleteAdapter(val context: Context, var athleteList: List<Athlete>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        val athlete = athleteList[position]
+        var athlete = athleteList[position]
         holder.binding.athlId.text = athlete.name
         holder.binding.natId.text = athlete.nation
         holder.binding.year.text = athlete.birth.toString()
         holder.binding.executePendingBindings()
 
+        if(athlete.name in favList){
+            holder.binding.favorite.setImageResource(R.drawable.baseline_star_24)
+        }
+        else{
+            holder.binding.favorite.setImageResource(R.drawable.baseline_star_border_24)
+        }
+
         // Item click manage
         holder.itemView.setOnClickListener{
             onItemClickListener?.OnItemClick(athlete)
         }
+        val db = Firebase.firestore
+        var firebaseAuth = FirebaseAuth.getInstance()
+
+        holder.binding.favorite.setOnClickListener {
+            if(athlete.name in favList){
+                // If athlete is in fav list, change img to blank star and remove it from fav list
+                holder.binding.favorite.setImageResource(R.drawable.baseline_star_border_24)
+                favList.remove(athlete.name)
+            }
+            else{
+                // If athlete is not in fav list, change img to filled star and add it to fav list
+                holder.binding.favorite.setImageResource(R.drawable.baseline_star_24)
+                favList[athlete.name] = athlete.name
+            }
+            db.collection(firebaseAuth.currentUser!!.uid).document("Favourite Athletes").set(favList)
+        }
+
+
     }
     override fun getItemCount(): Int {
         return athleteList.size

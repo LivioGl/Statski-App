@@ -91,7 +91,7 @@ class AthleteStats : AppCompatActivity() {
             // Setting linechart
             val last5 = current_athlete.GetLastFiveRaces(current_athlete.performance_list)
 
-
+            last5.reversed()
             val entries = mutableListOf<Entry>()
             for((index, performance) in last5.withIndex()){
 
@@ -163,6 +163,8 @@ class AthleteStats : AppCompatActivity() {
 
         }.filterNotNull()
 
+        // Possibile motivo crash: viene invertito perchè non è mutableList
+        // val reversed_entries = entries.reversed()
 
         // Creazione e configurazione del LineDataSet
         val dataSet = LineDataSet(entries, "Points scored in the last 5 races").apply {
