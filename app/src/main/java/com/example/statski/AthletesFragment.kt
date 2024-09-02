@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
+import com.google.firebase.firestore.toObject
 import com.google.gson.Gson
 import java.util.Locale
 
@@ -45,15 +46,22 @@ class AthletesFragment : Fragment() {
         firebaseAuth = FirebaseAuth.getInstance()
 
         // Checking if there are already fav athletes
-        db.collection(firebaseAuth.currentUser!!.uid).document("Favourite Athletes").get()
+        db.collection(firebaseAuth.currentUser!!.uid).get()
             .addOnSuccessListener {
-                    result->
-                val favAthletesList = result.toObject(mutableMapOf<String, String>()::class.java)?: mutableMapOf<String, String>()
+                documents ->
+                val favList = mutableListOf<String>()
+                for (document in documents){
+                    val favAthlete = document.getString("name")
+                    if (favAthlete != null) {
+                        favList.add(favAthlete)
+                    }
+                }
 
                 // Adapter instance
-                Athl_adapter = AthleteAdapter(requireContext(), athletesList, favAthletesList)
+                Athl_adapter = AthleteAdapter(requireContext(), athletesList, favList)
                 binding.rvAthletesList.adapter = Athl_adapter
-                // Override the item click method to open the new fragment
+
+                // Override the item click method to open the new activity
                 Athl_adapter.setOnItemClickListener(object : AthleteAdapter.OnItemClickListener{
                     override fun OnItemClick(athlete: Athlete){
                         // Handling item click
@@ -73,7 +81,8 @@ class AthletesFragment : Fragment() {
 
             }
             .addOnFailureListener{
-                Athl_adapter = AthleteAdapter(requireContext(), athletesList, mutableMapOf<String, String>())
+                Log.d("POPI POPI","Collection empty or not available")
+                Athl_adapter = AthleteAdapter(requireContext(), athletesList, mutableListOf<String>())
                 binding.rvAthletesList.adapter = Athl_adapter
                 // Override the item click method to open the new fragment
                 Athl_adapter.setOnItemClickListener(object : AthleteAdapter.OnItemClickListener{
@@ -211,7 +220,7 @@ class AthletesFragment : Fragment() {
 }
 
 
-class AthleteAdapter(val context: Context, var athleteList: List<Athlete>, var favList : MutableMap<String, String>) :
+class AthleteAdapter(val context: Context, var athleteList: List<Athlete>, var favList : MutableList<String>) :
     RecyclerView.Adapter<AthleteAdapter.ViewHolder>() {
         inner class ViewHolder(val binding: ItemAthletesLayoutBinding): RecyclerView.ViewHolder(binding.root)
 
@@ -236,12 +245,18 @@ class AthleteAdapter(val context: Context, var athleteList: List<Athlete>, var f
         holder.binding.year.text = athlete.birth.toString()
         holder.binding.executePendingBindings()
 
-        if(athlete.name in favList){
-            holder.binding.favorite.setImageResource(R.drawable.baseline_star_24)
+        // favList è una mutableListOf<String>
+        if(favList.isNotEmpty()){
+            if (athlete.name in favList){
+                holder.binding.favorite.setImageResource(R.drawable.baseline_star_24)
+            }
+            else{
+                holder.binding.favorite.setImageResource(R.drawable.baseline_star_border_24)
+            }
+
         }
-        else{
-            holder.binding.favorite.setImageResource(R.drawable.baseline_star_border_24)
-        }
+
+
 
         // Item click manage
         holder.itemView.setOnClickListener{
@@ -255,13 +270,28 @@ class AthleteAdapter(val context: Context, var athleteList: List<Athlete>, var f
                 // If athlete is in fav list, change img to blank star and remove it from fav list
                 holder.binding.favorite.setImageResource(R.drawable.baseline_star_border_24)
                 favList.remove(athlete.name)
+                db.collection(firebaseAuth.currentUser!!.uid).document(athlete.name).delete()
+                    .addOnSuccessListener {
+                        Log.d("Firebase Write", "Document removed!")
+                    }
+                    .addOnSuccessListener {
+                        Log.d("Firebase Write", "Document not removed")
+                    }
+
             }
             else{
                 // If athlete is not in fav list, change img to filled star and add it to fav list
                 holder.binding.favorite.setImageResource(R.drawable.baseline_star_24)
-                favList[athlete.name] = athlete.name
+                favList.add(athlete.name)
+                db.collection(firebaseAuth.currentUser!!.uid).document(athlete.name).set(athlete)
+                    .addOnSuccessListener {
+                        Log.d("Firebase Write", "Document added!")
+                    }
+                    .addOnFailureListener {
+                        Log.d("Firebase Write", "Document not added")
+                    }
             }
-            db.collection(firebaseAuth.currentUser!!.uid).document("Favourite Athletes").set(favList)
+
         }
 
 

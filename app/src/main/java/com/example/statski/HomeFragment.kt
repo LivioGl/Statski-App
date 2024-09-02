@@ -146,13 +146,13 @@ class HomeFragment : Fragment() {
             // For testing: substitute raceDate with a unix Value
             val alarmItem = AlarmItem(time = raceDate, race = it)
             alarmScheduler.schedule(alarmItem)
-            db = Firebase.firestore
-            if(WomenRace){
-                db.collection(firebaseAuth.currentUser!!.uid).document("WomenRaceLastAlarm").set(alarmItem)
-            }
-            else{
-                db.collection(firebaseAuth.currentUser!!.uid).document("MenRaceLastAlarm").set(alarmItem)
-            }
+//            db = Firebase.firestore
+//            if(WomenRace){
+//                db.collection(firebaseAuth.currentUser!!.uid).document("WomenRaceLastAlarm").set(alarmItem)
+//            }
+//            else{
+//                db.collection(firebaseAuth.currentUser!!.uid).document("MenRaceLastAlarm").set(alarmItem)
+//            }
 
             Toast.makeText(requireContext(), "Notification set for ${it.race_type} on ${it.date}", Toast.LENGTH_SHORT).show()
         }
