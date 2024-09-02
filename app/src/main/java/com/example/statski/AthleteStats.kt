@@ -133,6 +133,70 @@ class AthleteStats : AppCompatActivity() {
                 // Nothing to do
             }
         }
+            // Seasonal stats
+            val seasons = arrayOf("2023-24", "2022-23", "2021-22", "2020-21")//, "2019-20", "2018-19", "2017-18", "2016-17")
+            val spin2_adapter = ArrayAdapter(
+                this,
+                android.R.layout.simple_spinner_item,
+                seasons
+            )
+            val spinner2 = binding.statsSpinner
+            spin2_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinner2.adapter = spin2_adapter
+            // spinner2.setSelection(0)
+            spinner2.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parent: AdapterView<*>, view: View?, Position: Int, id: Long) {
+                    val selectedSeason = seasons[Position]
+                    var start: String = "October 01, 2023"
+                    var end: String = "March 31, 2024"
+                    when (selectedSeason) {
+                        "2023-24" -> {
+                            start = "October 01, 2023"
+                            end = "March 31, 2024"
+                        }
+
+                        "2022-23" -> {
+                            start = "October 01, 2022"
+                            end = "March 31, 2023"
+                        }
+
+                        "2021-22" -> {
+                            start = "October 01, 2021"
+                            end = "March 31, 2022"
+                        }
+
+                        "2020-21" -> {
+                            start = "October 01, 2020"
+                            end = "March 31, 2021"
+                        }
+
+                        else -> {
+                            Log.d("AthleteStats", "Please select a valid season")
+                        }
+
+                    }
+                    if(start != null && end != null){
+                        val seasonal_performances = current_athlete.filterPerformanceBySeason(start, end)
+                        binding.racesNumber.text = seasonal_performances.size.toString()
+                        binding.seasonWins.text = current_athlete.CountVictories(seasonal_performances).toString()
+                        binding.seasonPodiums.text = current_athlete.CountPodiums(seasonal_performances).toString()
+                        binding.avgPointsPerRace.text = current_athlete.Avg_points_per_race(seasonal_performances)
+                        binding.winRate.text = current_athlete.CalculateWinRate(seasonal_performances)
+                        binding.podiumRate.text = current_athlete.CalculatePodiumRate(seasonal_performances)
+
+                    }
+
+
+
+
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    // nothing to do
+                }
+            }
+
+
         }
 
     }

@@ -2,12 +2,14 @@ package com.example.statski
 
 import java.text.SimpleDateFormat
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 data class Athlete(
     val name: String,
     val nation: String,
-    val birth: Int
+    val birth: Int,
+    var isFav : Boolean = false
     ){
     val performance_list = mutableListOf<Performance>()
 
@@ -16,6 +18,29 @@ data class Athlete(
         return performance_list
             .map { it.getDateAsLocalDate() }
             .maxOrNull()
+    }
+
+    // val formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy", Locale.ENGLISH)
+    // Get races of a specific season
+    fun filterPerformanceBySeason(startDate: String, endDate: String): List<Performance>{
+
+//        startDate.format(formatter)
+//        val start : LocalDate = LocalDate.parse(startDate, formatter)
+//
+//        endDate.format(formatter)
+//        val end : LocalDate = LocalDate.parse(endDate, formatter)
+
+//        val start = LocalDate.parse(startDate, formatter)
+//        val end = LocalDate.parse(endDate, formatter)
+
+        val formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy", Locale.ENGLISH)
+        var start = LocalDate.parse(startDate, formatter)
+        var end = LocalDate.parse(endDate, formatter)
+        return performance_list.filter{
+            performance ->
+            val performanceDate = performance.getDateAsLocalDate()
+            !performanceDate.isBefore(start) && !performanceDate.isAfter(end)
+        }
     }
 
     // Get last 5 races
@@ -79,5 +104,38 @@ data class Athlete(
         return total_points
     }
 
+    // Count victories based on reduced list
+    fun CountVictories(season_races : List<Performance>): Int{
+        return season_races.count{it.position == "1"}
+    }
+    // Count podiums based on reduced list
+    fun CountPodiums(season_races : List<Performance>): Int{
+        return season_races.count{it.position == "1" || it.position == "2" || it.position == "3"}
+    }
+    // Count Avg points per races
+    fun Avg_points_per_race(season_races: List<Performance>): String{
+        val races = season_races.size
+        var total_points : Int = 0
+        for (element in season_races){
+            var p = element.cup_points.toIntOrNull()
+            if(p != null){
+                total_points+=p
+            }
+        }
+        val avg = total_points.toFloat() / races
+        return String.format("%.2f", avg)
+    }
+
+    // Win rate
+    fun CalculateWinRate(season_races: List<Performance>): String{
+        var victories = CountVictories(season_races)
+        var winRate = victories.toFloat() / season_races.size
+        return String.format("%.2f", winRate)
+    }
+    fun CalculatePodiumRate(season_races: List<Performance>): String{
+        var podiums = CountPodiums(season_races)
+        val podiumRate = podiums.toFloat() / season_races.size
+        return String.format("%.2f", podiumRate)
+    }
 
 }

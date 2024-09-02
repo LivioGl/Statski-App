@@ -245,7 +245,7 @@ class AthleteAdapter(val context: Context, var athleteList: List<Athlete>, var f
         holder.binding.year.text = athlete.birth.toString()
         holder.binding.executePendingBindings()
 
-        // favList è una mutableListOf<String>
+
         if(favList.isNotEmpty()){
             if (athlete.name in favList){
                 holder.binding.favorite.setImageResource(R.drawable.baseline_star_24)
@@ -270,6 +270,7 @@ class AthleteAdapter(val context: Context, var athleteList: List<Athlete>, var f
                 // If athlete is in fav list, change img to blank star and remove it from fav list
                 holder.binding.favorite.setImageResource(R.drawable.baseline_star_border_24)
                 favList.remove(athlete.name)
+                athlete.isFav = false
                 db.collection(firebaseAuth.currentUser!!.uid).document(athlete.name).delete()
                     .addOnSuccessListener {
                         Log.d("Firebase Write", "Document removed!")
@@ -283,6 +284,7 @@ class AthleteAdapter(val context: Context, var athleteList: List<Athlete>, var f
                 // If athlete is not in fav list, change img to filled star and add it to fav list
                 holder.binding.favorite.setImageResource(R.drawable.baseline_star_24)
                 favList.add(athlete.name)
+                athlete.isFav = true
                 db.collection(firebaseAuth.currentUser!!.uid).document(athlete.name).set(athlete)
                     .addOnSuccessListener {
                         Log.d("Firebase Write", "Document added!")
