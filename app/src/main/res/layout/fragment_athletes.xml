@@ -59,7 +59,7 @@
             android:layout_marginStart="3dp"
             android:layout_marginTop="0dp"
             android:backgroundTint="@color/blue"
-            android:tint="@color/white"
+            app:tint="@color/white"
             app:srcCompat="@drawable/baseline_delete_24"
 
             />

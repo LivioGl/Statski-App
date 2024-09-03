@@ -81,7 +81,6 @@ class AthletesFragment : Fragment() {
 
             }
             .addOnFailureListener{
-                Log.d("POPI POPI","Collection empty or not available")
                 Athl_adapter = AthleteAdapter(requireContext(), athletesList, mutableListOf<String>())
                 binding.rvAthletesList.adapter = Athl_adapter
                 // Override the item click method to open the new fragment
@@ -114,7 +113,7 @@ class AthletesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("AthletesFragment", "Fragment view created")
+
         binding.rvAthletesList.layoutManager = LinearLayoutManager(requireContext())
         binding.rvAthletesList.setHasFixedSize(true)
 
@@ -244,6 +243,7 @@ class AthleteAdapter(val context: Context, var athleteList: List<Athlete>, var f
         holder.binding.natId.text = athlete.nation
         holder.binding.year.text = athlete.birth.toString()
         holder.binding.executePendingBindings()
+
 
 
         if(favList.isNotEmpty()){

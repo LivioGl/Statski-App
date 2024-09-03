@@ -5,10 +5,9 @@
 
     <data>
         <variable
-            name="athlete"
+            name="favAthlete"
             type="com.example.statski.Athlete" />
     </data>
-
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -16,14 +15,6 @@
         android:layout_margin="16dp"
         app:cardCornerRadius="15dp">
 
-        <ImageButton
-            android:id="@+id/favorite"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:layout_gravity="right"
-            android:layout_weight="0.2"
-            android:backgroundTint="@color/white"
-            app:srcCompat="@drawable/baseline_star_border_24" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -37,13 +28,14 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/athl_id"
+                    android:id="@+id/athlete_id"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textColor="@android:color/black"
                     android:textSize="18sp"
                     tools:text="Athlete name" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -61,7 +53,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/nat_id"
+                    android:id="@+id/nation_id"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -85,7 +77,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/year"
+                    android:id="@+id/year_id"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -96,4 +88,5 @@
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
+
 </layout>
