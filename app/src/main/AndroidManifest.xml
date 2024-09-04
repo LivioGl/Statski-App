@@ -18,9 +18,11 @@
         android:theme="@style/Theme.Statski"
         tools:targetApi="31">
         <activity
-            android:name=".AthleteStats"
+            android:name=".NextRacePreview"
             android:exported="false" />
-        <!-- Broadcast Receiver for alarm -->
+        <activity
+            android:name=".AthleteStats"
+            android:exported="false" /> <!-- Broadcast Receiver for alarm -->
         <receiver android:name=".AlarmReceiver" /> <!-- Broadcast Receiver for reboot alarms when device is shut down -->
         <receiver android:name=".BootReceiver" />
 
@@ -36,7 +38,7 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
 
         <meta-data
             android:name="preloaded_fonts"

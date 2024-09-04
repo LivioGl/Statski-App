@@ -29,9 +29,8 @@
         android:id="@+id/set_notify"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="165dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="165dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="228dp"
         android:shadowColor="#000000"
         android:shadowDx="2.5"
         android:shadowDy="2.5"
@@ -39,7 +38,21 @@
         android:text="Remind me!"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/when_next_race" />
+
+    <Button
+        android:id="@+id/preview_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="58dp"
+        android:shadowColor="#000000"
+        android:shadowDx="2.5"
+        android:shadowDy="2.5"
+        android:shadowRadius="3.5"
+        android:text="See preview"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/when_next_race" />
 
     <TextView
@@ -248,9 +261,8 @@
         android:id="@+id/notify_button_men"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="165dp"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="165dp"
+        android:layout_marginEnd="228dp"
         android:shadowColor="#000000"
         android:shadowDx="2.5"
         android:shadowDy="2.5"
@@ -258,7 +270,21 @@
         android:text="Remind me!"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/when_next_race_men" />
+
+    <Button
+        android:id="@+id/preview_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="68dp"
+        android:shadowColor="#000000"
+        android:shadowDx="2.5"
+        android:shadowDy="2.5"
+        android:shadowRadius="3.5"
+        android:text="See preview"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/when_next_race_men" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

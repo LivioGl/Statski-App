@@ -116,13 +116,13 @@
     },
     {
       "date": "2024-12-21",
-      "place": "Sankt Moritz",
+      "place": "St.Moritz",
       "nation": "SUI",
       "race_type": "Women's SuperG"
     },
     {
       "date": "2024-12-22",
-      "place": "Sankt Moritz",
+      "place": "St.Moritz",
       "nation": "SUI",
       "race_type": "Women's SuperG"
     },
@@ -182,13 +182,13 @@
     },
     {
       "date": "2025-01-11",
-      "place": "Sankt Anton",
+      "place": "St.Anton",
       "nation": "AUT",
       "race_type": "Women's Downhill"
     },
     {
       "date": "2025-01-12",
-      "place": "Sankt Anton",
+      "place": "St.Anton",
       "nation": "AUT",
       "race_type": "Women's SuperG"
     },
@@ -248,19 +248,19 @@
     },
     {
       "date": "2025-01-24",
-      "place": "Kitzbuehel",
+      "place": "Kitzbuhel",
       "nation": "AUT",
       "race_type": "Men's SuperG"
     },
     {
       "date": "2025-01-25",
-      "place": "Kitzbuehel",
+      "place": "Kitzbuhel",
       "nation": "AUT",
       "race_type": "Men's Downhill"
     },
     {
       "date": "2025-01-26",
-      "place": "Kitzbuehel",
+      "place": "Kitzbuhel",
       "nation": "AUT",
       "race_type": "Men's Slalom"
     },

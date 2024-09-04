@@ -26,6 +26,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
+import com.google.gson.Gson
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.Month
@@ -39,6 +40,8 @@ class HomeFragment : Fragment() {
     private lateinit var binding : FragmentHomeBinding
     val viewModel_instance : AthletesViewModel by activityViewModels()
     private var Races_calendar = mutableListOf<Race>()
+    private var winnersList_f = mutableListOf<Athlete>()
+    private var winnersList_m = mutableListOf<Athlete>()
     private lateinit var alarmScheduler: AndroidAlarmScheduler
     private lateinit var db : FirebaseFirestore
     private lateinit var firebaseAuth : FirebaseAuth
@@ -75,6 +78,8 @@ class HomeFragment : Fragment() {
             binding.middleText.text = "Upcoming races:"
         }
 
+        // Get Athletes List from viewModel
+        var AthletesList : MutableList<Athlete> = viewModel_instance.athletesMap.values.toMutableList()
         // Fill TextViews with nearest men's race and nearest women's race attributes
         binding.nextWomenRace.text = WomenRace?.race_type
         binding.whenNextRace.text = WomenRace?.date
@@ -104,6 +109,47 @@ class HomeFragment : Fragment() {
                 Toast.makeText(requireContext(), "Please give notification permission", Toast.LENGTH_SHORT).show()
             }
 
+        }
+
+        // OnClickListener for Next Preview Activity
+        binding.preview1.setOnClickListener {
+            val women_race = Gson().toJson(WomenRace)
+            if(WomenRace != null){
+                winnersList_f = AthletesList.filter{
+                    it.performance_list.filter{
+                        it.place == WomenRace.place+"_f" &&( it.cup_points == "100" || it.cup_points == "80" || it.cup_points == "60")
+                    }.isNotEmpty()
+                }.toMutableList()
+
+                // winnersList.size
+                val who_to_watch_women = Gson().toJson(winnersList_f)
+                val intent = Intent(activity, NextRacePreview::class.java)
+                intent.putExtra("Women Race", women_race)
+                intent.putExtra("Who to watch women", who_to_watch_women)
+                intent.putExtra("IsWomenRace", true)
+                startActivity(intent)
+            }
+
+        }
+        binding.preview2.setOnClickListener {
+            val men_race = Gson().toJson(MenRace)
+
+            if(MenRace != null){
+                winnersList_m = AthletesList.filter{
+                    it.performance_list.filter{
+                        it.place == MenRace.place+"_m" &&( it.cup_points == "100" || it.cup_points == "80" || it.cup_points == "60")
+                    }.isNotEmpty()
+                }.toMutableList()
+
+                // winnersList.size
+                val who_to_watch_men = Gson().toJson(winnersList_m)
+                val intent = Intent(activity, NextRacePreview::class.java)
+                intent.putExtra("Men Race", men_race)
+                intent.putExtra("Who to watch men", who_to_watch_men)
+                intent.putExtra("IsWomenRace", false)
+                startActivity(intent)
+
+            }
         }
     }
 
@@ -146,16 +192,11 @@ class HomeFragment : Fragment() {
             // For testing: substitute raceDate with a unix Value
             val alarmItem = AlarmItem(time = raceDate, race = it)
             alarmScheduler.schedule(alarmItem)
-//            db = Firebase.firestore
-//            if(WomenRace){
-//                db.collection(firebaseAuth.currentUser!!.uid).document("WomenRaceLastAlarm").set(alarmItem)
-//            }
-//            else{
-//                db.collection(firebaseAuth.currentUser!!.uid).document("MenRaceLastAlarm").set(alarmItem)
-//            }
-
             Toast.makeText(requireContext(), "Notification set for ${it.race_type} on ${it.date}", Toast.LENGTH_SHORT).show()
         }
 
     }
+
+
+
 }
