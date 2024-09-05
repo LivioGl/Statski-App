@@ -27,7 +27,7 @@
         },
         {
             "name": "Rettenbach",
-            "location": "Soelden",
+            "location": "Solden",
             "mountain": "Rettenbach",
             "nation": "AUT",
             "race_host": "GS",
@@ -51,7 +51,7 @@
         },
         {
             "name": "Streif",
-            "location": "Kitzbuehel",
+            "location": "Kitzbuhel",
             "mountain": "Hahnenkamm",
             "nation": "AUT",
             "race_host": "DH",
@@ -147,7 +147,7 @@
         },
         {
             "name": "Corviglia",
-            "location": "Sankt Moritz",
+            "location": "St.Moritz",
             "mountain": "Piz Nair",
             "nation": "SUI",
             "race_host": "DH, SG",
@@ -183,7 +183,7 @@
         },
         {
             "name": "3-Tre",
-            "location": "M. di Campiglio",
+            "location": "Madonna di Campiglio",
             "mountain": "Canalone Miramonti",
             "nation": "ITA",
             "race_host": "SL",
@@ -195,7 +195,7 @@
         },
         {
             "name": "Ganslern",
-            "location": "Kitzbuehel",
+            "location": "Kitzbuhel",
             "mountain": "Hahnenkamm",
             "nation": "AUT",
             "race_host": "SL",

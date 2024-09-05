@@ -14,6 +14,7 @@ class NextRacePreview : AppCompatActivity() {
 
     lateinit var binding : ActivityNextRacePreviewBinding
     private lateinit var currentRace : Race
+    private lateinit var currentSlope : Slope
     private lateinit var winnersList: MutableList<Athlete>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,65 +23,84 @@ class NextRacePreview : AppCompatActivity() {
         setContentView(binding.root)
         enableEdgeToEdge()
 
-
         val isWomenRace = intent.getBooleanExtra("IsWomenRace", false)
         if(!isWomenRace){
             val menRaceJson = intent.getStringExtra("Men Race")
             val whoToWatchMenJson = intent.getStringExtra("Who to watch men")
+            val slopeJson = intent.getStringExtra("Men slope")
 
             if (menRaceJson != null && whoToWatchMenJson != null) {
                 val gson = Gson()
 
-                val Race = gson.fromJson(menRaceJson, Race::class.java)
-                currentRace = Race
+                currentSlope = gson.fromJson(slopeJson, Slope::class.java)
+                currentRace = gson.fromJson(menRaceJson, Race::class.java)
 
                 val listType = object : TypeToken<MutableList<Athlete>>() {}.type
-                val List: MutableList<Athlete> = gson.fromJson(whoToWatchMenJson, listType)
-                winnersList = List
-
+                winnersList = gson.fromJson(whoToWatchMenJson, listType)
             }
 
-            val athleteWithMostWins = winnersList.maxByOrNull { it.performance_list.count { perf -> perf.position == "1" } }
-            val athleteWithMostPodiums = winnersList.maxByOrNull { it.performance_list.count { perf -> perf.position in listOf("1", "2", "3") } }
-
-            if (athleteWithMostWins != null){
-                // Filling text views
-                binding.mostWinsAthlete.text = athleteWithMostWins.name
+            val athleteWithMostWins = winnersList.maxByOrNull { athlete ->
+                athlete.performance_list.count { it.place == currentSlope.location+"_m" && it.position == "1" }
             }
-        }
-        else{
+
+            val athleteWithMostPodiums = winnersList.maxByOrNull { athlete ->
+                athlete.performance_list.count { it.place == currentSlope.location+"_m" && (it.position == "1" || it.position == "2" || it.position == "3") }
+            }
+
+            if (athleteWithMostWins != null && athleteWithMostPodiums != null) {
+                val wins = athleteWithMostWins.performance_list.count{it.place == currentSlope.location+"_m" && it.position == "1"}
+                val podiums = athleteWithMostPodiums.performance_list.count{it.place == currentSlope.location+"_m" && (it.position == "1" || it.position == "2" || it.position == "3")}
+                if (athleteWithMostWins.name == athleteWithMostPodiums.name){
+                    binding.mostWinsAthlete.text = athleteWithMostWins.name+" is the king of "+currentSlope.name+". He has "+podiums+" podiums and "+wins+" victories on the "+currentSlope.name+": definitely the athlete to beat"
+                    binding.mostPodiumsAthlete.text = "We expect a great performance from him"
+                } else {
+                    binding.mostWinsAthlete.text = athleteWithMostWins.name+", won "+wins.toString()+ " times on "+currentSlope.name
+                    binding.mostPodiumsAthlete.text = athleteWithMostPodiums.name+", who secured "+podiums.toString()+" podiums on the "+currentSlope.name+". He is always competitive here"
+                }
+            }
+        } else {
             val womenRaceJson = intent.getStringExtra("Women Race")
             val whoToWatchWomenJson = intent.getStringExtra("Who to watch women")
+            val slopeJson = intent.getStringExtra("Women slope")
 
             if (womenRaceJson != null && whoToWatchWomenJson != null) {
                 val gson = Gson()
 
-                val Race = gson.fromJson(womenRaceJson, Race::class.java)
-                currentRace = Race
+                currentRace = gson.fromJson(womenRaceJson, Race::class.java)
+                currentSlope = gson.fromJson(slopeJson, Slope::class.java)
 
                 val listType = object : TypeToken<MutableList<Athlete>>() {}.type
-                val List: MutableList<Athlete> = gson.fromJson(whoToWatchWomenJson, listType)
-                winnersList = List
-
+                winnersList = gson.fromJson(whoToWatchWomenJson, listType)
             }
-            val athleteWithMostWins = winnersList.maxByOrNull { it.performance_list.count { perf -> perf.position == "1" } }
-            val athleteWithMostPodiums = winnersList.maxByOrNull { it.performance_list.count { perf -> perf.position in listOf("1", "2", "3") } }
 
-            if (athleteWithMostWins != null){
-                // Filling text views
+            val athleteWithMostWins = winnersList.maxByOrNull { athlete ->
+                athlete.performance_list.count { it.place == currentSlope.location+"_f" && it.position == "1" }
+            }
 
-                binding.mostWinsAthlete.text = athleteWithMostWins.name
+            val athleteWithMostPodiums = winnersList.maxByOrNull { athlete ->
+                athlete.performance_list.count { it.place == currentSlope.location+"_f" && (it.position == "1" || it.position == "2" || it.position == "3") }
+            }
+
+            if (athleteWithMostWins != null && athleteWithMostPodiums != null) {
+                val wins = athleteWithMostWins.performance_list.count{it.place == currentSlope.location+"_f" && it.position == "1"}
+                val podiums = athleteWithMostPodiums.performance_list.count{it.place == currentSlope.location+"_f" && (it.position == "1" || it.position == "2" || it.position == "3")}
+                if (athleteWithMostWins.name == athleteWithMostPodiums.name){
+                    binding.mostWinsAthlete.text = athleteWithMostWins.name+" is the queen of "+currentSlope.name+". She has "+podiums+" podiums and "+wins+" victories on the "+currentSlope.name+": definitely the athlete to beat"
+                    binding.mostPodiumsAthlete.text = "We expect a great performance from her"
+                } else {
+                    binding.mostWinsAthlete.text = athleteWithMostWins.name+", won "+wins.toString()+ " times on "+currentSlope.name
+                    binding.mostPodiumsAthlete.text = athleteWithMostPodiums.name+", who secured "+podiums.toString()+" podiums on the "+currentSlope.name+". She is always competitive here"
+                }
             }
         }
-        binding.mainTitle.text = currentRace.place+" "+currentRace.race_type
 
+        binding.mainTitle.text = currentRace.place+" "+currentRace.race_type
 
         // Handling back button
         val backButton = binding.backButton
         backButton.setOnClickListener {
             finish()
         }
-
 
     }
 }

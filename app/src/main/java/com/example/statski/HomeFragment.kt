@@ -39,6 +39,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var binding : FragmentHomeBinding
     val viewModel_instance : AthletesViewModel by activityViewModels()
+    val Slopes_VM : SlopesViewModel by activityViewModels()
     private var Races_calendar = mutableListOf<Race>()
     private var winnersList_f = mutableListOf<Athlete>()
     private var winnersList_m = mutableListOf<Athlete>()
@@ -121,10 +122,15 @@ class HomeFragment : Fragment() {
                     }.isNotEmpty()
                 }.toMutableList()
 
+                var slopesList = Slopes_VM.SlopesMap.values.toMutableList().filter{it.location == WomenRace.place}
+                var slope_name_f = slopesList.firstOrNull() ?: error("No slopes found")
+
                 // winnersList.size
                 val who_to_watch_women = Gson().toJson(winnersList_f)
+                val slope_f = Gson().toJson(slope_name_f)
                 val intent = Intent(activity, NextRacePreview::class.java)
                 intent.putExtra("Women Race", women_race)
+                intent.putExtra("Women slope", slope_f)
                 intent.putExtra("Who to watch women", who_to_watch_women)
                 intent.putExtra("IsWomenRace", true)
                 startActivity(intent)
@@ -141,10 +147,15 @@ class HomeFragment : Fragment() {
                     }.isNotEmpty()
                 }.toMutableList()
 
+
+                var slopesList = Slopes_VM.SlopesMap.values.toMutableList().filter{it.location == MenRace.place}
+                var slope_name_m = slopesList.firstOrNull() ?: error("No slopes found")
                 // winnersList.size
                 val who_to_watch_men = Gson().toJson(winnersList_m)
+                val slope_m = Gson().toJson(slope_name_m)
                 val intent = Intent(activity, NextRacePreview::class.java)
                 intent.putExtra("Men Race", men_race)
+                intent.putExtra("Men slope", slope_m)
                 intent.putExtra("Who to watch men", who_to_watch_men)
                 intent.putExtra("IsWomenRace", false)
                 startActivity(intent)
