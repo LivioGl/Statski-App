@@ -27,4 +27,10 @@ data class Performance(
         val formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy", Locale.ENGLISH)
         return LocalDate.parse(date, formatter)
     }
+
+    fun changeToCompactFormat(): String{
+        val formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy", Locale.ENGLISH)
+        val date = LocalDate.parse(this.date, formatter)
+        return date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
+    }
 }

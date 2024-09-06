@@ -20,19 +20,58 @@
 
     <Spinner
         android:id="@+id/spinner_athlete_2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="119dp"
-        android:layout_marginTop="48dp"
-        app:layout_constraintStart_toEndOf="@+id/spinner_athlete_1"
+        android:layout_width="165dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="72dp"
+        android:layout_marginEnd="28dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title" />
 
     <Spinner
         android:id="@+id/spinner_athlete_1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="165dp"
+        android:layout_height="48dp"
         android:layout_marginStart="28dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="72dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title" />
+
+    <SearchView
+        android:id="@+id/search_athlete_1"
+        android:layout_width="165dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="28dp"
+        app:layout_constraintBottom_toTopOf="@+id/spinner_athlete_1"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <SearchView
+        android:id="@+id/search_athlete_2"
+        android:layout_width="165dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="28dp"
+        app:layout_constraintBottom_toTopOf="@+id/spinner_athlete_2"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/send_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="124dp"
+        android:layout_marginTop="16dp"
+        android:text="Search for results"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner_athlete_1" />
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/linechart_athletes"
+        android:layout_width="321dp"
+        android:layout_height="186dp"
+        android:layout_marginStart="45dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="45dp"
+        android:minWidth="321dp"
+        android:minHeight="186dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/send_data" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -20,18 +20,8 @@ data class Athlete(
             .maxOrNull()
     }
 
-    // val formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy", Locale.ENGLISH)
-    // Get races of a specific season
     fun filterPerformanceBySeason(startDate: String, endDate: String): List<Performance>{
 
-//        startDate.format(formatter)
-//        val start : LocalDate = LocalDate.parse(startDate, formatter)
-//
-//        endDate.format(formatter)
-//        val end : LocalDate = LocalDate.parse(endDate, formatter)
-
-//        val start = LocalDate.parse(startDate, formatter)
-//        val end = LocalDate.parse(endDate, formatter)
 
         val formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy", Locale.ENGLISH)
         var start = LocalDate.parse(startDate, formatter)
