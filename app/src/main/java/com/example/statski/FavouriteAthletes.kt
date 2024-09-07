@@ -46,7 +46,7 @@ class FavouriteAthletes : Fragment() {
         FavAthlList = viewModel_instance.athletesMap.values.toMutableList()
 
         // Setting adapter instance
-        FavAthl_adapter = FavouriteAthletesAdapter(requireContext(), FavAthlList, mutableListOf())
+        FavAthl_adapter = FavouriteAthletesAdapter(requireContext(), FavAthlList, mutableListOf<String>())
 //        binding.rvFavouriteAthletesList.adapter = FavAthl_adapter
 
         // Checking if there are fav athletes
@@ -141,9 +141,23 @@ class FavouriteAthletesAdapter(val context: Context, var athleteList: List<Athle
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        athleteList = athleteList.filter{ it.name in favList && it.isFav }
+        //athleteList = athleteList.filter{ it.name in favList && it.isFav }
 
-        var favAthlete = athleteList[position]
+//        val filteredAthleteList = mutableListOf<Athlete>()
+//
+//        for (fav in favList) {
+//
+//            val matchingAthletes = athleteList.filter { athlete ->
+//                athlete.name.equals(fav, ignoreCase = true) && athlete.isFav
+//            }
+//            filteredAthleteList.addAll(matchingAthletes)
+//        }
+        val favAthletes = athleteList.filter {
+            it.name in favList
+        }
+
+
+        var favAthlete = favAthletes[position]
         holder.binding.athleteId.text = favAthlete.name
         holder.binding.yearId.text = favAthlete.birth.toString()
         holder.binding.nationId.text = favAthlete.nation
