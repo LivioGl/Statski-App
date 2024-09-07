@@ -42,9 +42,11 @@ class FavouriteAthletes : Fragment() {
         db = Firebase.firestore
         firebaseAuth = FirebaseAuth.getInstance()
 
+        // Get Athletes list from ViewModel
+        FavAthlList = viewModel_instance.athletesMap.values.toMutableList()
 
         // Setting adapter instance
-//        FavAthl_adapter = FavouriteAthletesAdapter(requireContext(), FavAthlList)
+        FavAthl_adapter = FavouriteAthletesAdapter(requireContext(), FavAthlList, mutableListOf())
 //        binding.rvFavouriteAthletesList.adapter = FavAthl_adapter
 
         // Checking if there are fav athletes
@@ -86,8 +88,7 @@ class FavouriteAthletes : Fragment() {
         // Setting RV details
         binding.rvFavouriteAthletesList.layoutManager = LinearLayoutManager(requireContext())
         binding.rvFavouriteAthletesList.setHasFixedSize(true)
-        // Get Athletes list from ViewModel
-        FavAthlList = viewModel_instance.athletesMap.values.toMutableList()
+
 
 
 
