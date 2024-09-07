@@ -18,6 +18,9 @@
         android:theme="@style/Theme.Statski"
         tools:targetApi="31">
         <activity
+            android:name=".FocusOnFavAthlete"
+            android:exported="false" />
+        <activity
             android:name=".NextRacePreview"
             android:exported="false" />
         <activity

@@ -151,6 +151,8 @@ class NextRacePreview : AppCompatActivity() {
                 .sortedByDescending { it.value }
                 .take(3)
 
+            // TODO fix in funzione delle ultime modifiche
+
             // Calculating data and stats to fill TextViews
             if (athleteWithMostWins != null && athleteWithMostPodiums != null) {
                 val wins = athleteWithMostWins.performance_list.count{it.place == currentSlope.location+"_f" && it.position == "1"}

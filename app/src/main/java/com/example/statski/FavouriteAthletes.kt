@@ -1,6 +1,7 @@
 package com.example.statski
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.statski.AthleteAdapter.OnItemClickListener
 import com.example.statski.databinding.FragmentFavouriteAthletesBinding
 import com.example.statski.databinding.ItemFavAthletesLayoutBinding
 import com.google.firebase.Firebase
@@ -18,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
+import com.google.gson.Gson
 
 import java.util.Locale
 
@@ -38,6 +41,9 @@ class FavouriteAthletes : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        binding = FragmentFavouriteAthletesBinding.inflate(inflater, container, false)
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewModel = viewModel_instance
 
         db = Firebase.firestore
         firebaseAuth = FirebaseAuth.getInstance()
@@ -45,9 +51,12 @@ class FavouriteAthletes : Fragment() {
         // Get Athletes list from ViewModel
         FavAthlList = viewModel_instance.athletesMap.values.toMutableList()
 
+        // Setting RV details
+        binding.rvFavouriteAthletesList.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvFavouriteAthletesList.setHasFixedSize(true)
+
         // Setting adapter instance
         FavAthl_adapter = FavouriteAthletesAdapter(requireContext(), FavAthlList, mutableListOf<String>())
-//        binding.rvFavouriteAthletesList.adapter = FavAthl_adapter
 
         // Checking if there are fav athletes
         db.collection(firebaseAuth.currentUser!!.uid).get()
@@ -62,11 +71,24 @@ class FavouriteAthletes : Fragment() {
                 }
                 FavAthl_adapter = FavouriteAthletesAdapter(requireContext(), FavAthlList, favList)
                 binding.rvFavouriteAthletesList.adapter = FavAthl_adapter
-                // TODO SetOnClickListener()
 
                 if(favList.isEmpty()){
                     Toast.makeText(requireContext(), "You do not have any favourite athlete ", Toast.LENGTH_LONG).show()
                 }
+
+                FavAthl_adapter.setOnItemClickListener(object : FavouriteAthletesAdapter.OnItemClickListener{
+                    override fun OnItemClick(athlete: Athlete){
+                        // Getting athlete selected
+                        val athlete_picked = Gson().toJson(athlete)
+
+                        val intent = Intent(activity, FocusOnFavAthlete::class.java)
+                        intent.putExtra("FavListSize", favList.size.toString())
+                        intent.putExtra("athlete_picked", athlete_picked)
+                        startActivity(intent)
+                    }
+                })
+
+
             }
             .addOnFailureListener {
                 FavAthl_adapter = FavouriteAthletesAdapter(requireContext(), FavAthlList, mutableListOf<String>())
@@ -75,23 +97,13 @@ class FavouriteAthletes : Fragment() {
 
             }
 
-        binding = FragmentFavouriteAthletesBinding.inflate(inflater, container, false)
-        binding.lifecycleOwner = viewLifecycleOwner
-        binding.viewModel = viewModel_instance
+
 
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // Setting RV details
-        binding.rvFavouriteAthletesList.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvFavouriteAthletesList.setHasFixedSize(true)
-
-
-
-
 
 
 
@@ -141,28 +153,28 @@ class FavouriteAthletesAdapter(val context: Context, var athleteList: List<Athle
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        //athleteList = athleteList.filter{ it.name in favList && it.isFav }
-
-//        val filteredAthleteList = mutableListOf<Athlete>()
-//
-//        for (fav in favList) {
-//
-//            val matchingAthletes = athleteList.filter { athlete ->
-//                athlete.name.equals(fav, ignoreCase = true) && athlete.isFav
-//            }
-//            filteredAthleteList.addAll(matchingAthletes)
-//        }
         val favAthletes = athleteList.filter {
             it.name in favList
         }
-
-
         var favAthlete = favAthletes[position]
         holder.binding.athleteId.text = favAthlete.name
         holder.binding.yearId.text = favAthlete.birth.toString()
         holder.binding.nationId.text = favAthlete.nation
 
+        holder.itemView.setOnClickListener {
+            onItemClickListener?.OnItemClick(favAthlete)
+        }
 
     }
     override fun getItemCount(): Int = favList.size
+
+    interface OnItemClickListener{
+        fun OnItemClick(athlete: Athlete)
+    }
+
+    private var onItemClickListener: OnItemClickListener? = null
+
+    fun setOnItemClickListener(onItemClickListener: OnItemClickListener){
+        this.onItemClickListener = onItemClickListener
+    }
 }
