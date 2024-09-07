@@ -80,8 +80,8 @@ class AthleteStats : AppCompatActivity() {
             else{
                 binding.podiums.text = podiums.toString()+" podiums"
             }
-            val points = current_athlete.SumPoints()
-            binding.totalPoints.text = points.toString()+" points"
+            val career_races = current_athlete.performance_list.size
+            binding.races.text = career_races.toString()+" races"
 
 
             val mostRecentPerformance = current_athlete.getMostRecentPerformanceDate()

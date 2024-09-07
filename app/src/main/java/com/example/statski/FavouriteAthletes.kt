@@ -25,9 +25,10 @@ import java.util.Locale
 class FavouriteAthletes : Fragment() {
 
     private lateinit var binding : FragmentFavouriteAthletesBinding
-    private lateinit var FavAthl_adapter : FavouriteAthletesAdapter
+
     private var FavAthlList = mutableListOf<Athlete>()
     val viewModel_instance : AthletesViewModel by activityViewModels()
+    private lateinit var FavAthl_adapter : FavouriteAthletesAdapter
     private var currentFilterText : String? = null
     private lateinit var db : FirebaseFirestore
     private lateinit var firebaseAuth : FirebaseAuth
