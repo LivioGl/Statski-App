@@ -42,16 +42,16 @@ class NextRacePreview : AppCompatActivity() {
             }
 
             val athleteWithMostWins = winnersList.maxByOrNull { athlete ->
-                athlete.performance_list.count { it.place == currentSlope.location+"_m" && it.position == "1" }
+                athlete.performance_list.count { it.place == currentSlope.location && it.position == "1" }
             }
 
             val athleteWithMostPodiums = winnersList.maxByOrNull { athlete ->
-                athlete.performance_list.count { it.place == currentSlope.location+"_m" && (it.position == "1" || it.position == "2" || it.position == "3") }
+                athlete.performance_list.count { it.place == currentSlope.location && (it.position == "1" || it.position == "2" || it.position == "3") }
             }
 
             // Calculating avg time delay of second and third place from winning athlete
             val secondPlacePerformances = winnersList.flatMap {
-                athlete -> athlete.performance_list.filter { it.position == "2" && it.place == currentSlope.location+"_m"}
+                athlete -> athlete.performance_list.filter { it.position == "2" && it.place == currentSlope.location}
                 .map{it.total_time.replace("+", "").toDouble()}
             }
             val result_second_place = secondPlacePerformances.sum() / secondPlacePerformances.size
@@ -59,7 +59,7 @@ class NextRacePreview : AppCompatActivity() {
 
 
             val thirdPlacePerformances = winnersList.flatMap {
-                    athlete -> athlete.performance_list.filter { it.position == "3" && it.place == currentSlope.location+"_m"}
+                    athlete -> athlete.performance_list.filter { it.position == "3" && it.place == currentSlope.location}
                 .map{it.total_time.replace("+", "").toDouble()}
             }
             val result_third_place = thirdPlacePerformances.sum() / thirdPlacePerformances.size
@@ -69,7 +69,7 @@ class NextRacePreview : AppCompatActivity() {
             // Calculating data about national teams
             val historyPodiumPerformance = winnersList.flatMap {
                     athlete -> athlete.performance_list.filter {
-                it.place == currentSlope.location+"_m" && (it.position == "1" || it.position == "2" || it.position == "3")
+                it.place == currentSlope.location && (it.position == "1" || it.position == "2" || it.position == "3")
             }.map{
                 athlete.nation
             }
@@ -82,8 +82,8 @@ class NextRacePreview : AppCompatActivity() {
 
             // Calculating data and stats to fill TextViews
             if (athleteWithMostWins != null && athleteWithMostPodiums != null) {
-                val wins = athleteWithMostWins.performance_list.count{it.place == currentSlope.location+"_m" && it.position == "1"}
-                val podiums = athleteWithMostPodiums.performance_list.count{it.place == currentSlope.location+"_m" && (it.position == "1" || it.position == "2" || it.position == "3")}
+                val wins = athleteWithMostWins.performance_list.count{it.place == currentSlope.location && it.position == "1"}
+                val podiums = athleteWithMostPodiums.performance_list.count{it.place == currentSlope.location && (it.position == "1" || it.position == "2" || it.position == "3")}
                 if (athleteWithMostWins.name == athleteWithMostPodiums.name){
                     binding.mostWinsAthlete.text = athleteWithMostWins.name+" is the king of "+currentSlope.name+". He has "+podiums+" podiums and "+wins+" victories on the "+currentSlope.name+": definitely the athlete to beat"
                     binding.mostPodiumsAthlete.text = "We expect a great performance from him"
@@ -114,16 +114,16 @@ class NextRacePreview : AppCompatActivity() {
             }
 
             val athleteWithMostWins = winnersList.maxByOrNull { athlete ->
-                athlete.performance_list.count { it.place == currentSlope.location+"_f" && it.position == "1" }
+                athlete.performance_list.count { it.place == currentSlope.location && it.position == "1" }
             }
 
             val athleteWithMostPodiums = winnersList.maxByOrNull { athlete ->
-                athlete.performance_list.count { it.place == currentSlope.location+"_f" && (it.position == "1" || it.position == "2" || it.position == "3") }
+                athlete.performance_list.count { it.place == currentSlope.location && (it.position == "1" || it.position == "2" || it.position == "3") }
             }
 
             // Calculating avg time delay of second and third place from winning athlete
             val secondPlacePerformances = winnersList.flatMap {
-                    athlete -> athlete.performance_list.filter { it.position == "2" && it.place == currentSlope.location+"_f"}
+                    athlete -> athlete.performance_list.filter { it.position == "2" && it.place == currentSlope.location}
                 .map{it.total_time.replace("+", "").toDouble()}
             }
             var result_second_place = secondPlacePerformances.sum() / secondPlacePerformances.size
@@ -131,7 +131,7 @@ class NextRacePreview : AppCompatActivity() {
 
 
             val thirdPlacePerformances = winnersList.flatMap {
-                    athlete -> athlete.performance_list.filter { it.position == "3" && it.place == currentSlope.location+"_f"}
+                    athlete -> athlete.performance_list.filter { it.position == "3" && it.place == currentSlope.location}
                 .map{it.total_time.replace("+", "").toDouble()}
             }
             var result_third_place = thirdPlacePerformances.sum() / thirdPlacePerformances.size
@@ -141,7 +141,7 @@ class NextRacePreview : AppCompatActivity() {
             // Calculating data about national teams
             val historyPodiumPerformance = winnersList.flatMap {
                 athlete -> athlete.performance_list.filter {
-                    it.place == currentSlope.location+"_f" && (it.position == "1" || it.position == "2" || it.position == "3")
+                    it.place == currentSlope.location && (it.position == "1" || it.position == "2" || it.position == "3")
                 }.map{
                     athlete.nation
                 }
@@ -155,8 +155,8 @@ class NextRacePreview : AppCompatActivity() {
 
             // Calculating data and stats to fill TextViews
             if (athleteWithMostWins != null && athleteWithMostPodiums != null) {
-                val wins = athleteWithMostWins.performance_list.count{it.place == currentSlope.location+"_f" && it.position == "1"}
-                val podiums = athleteWithMostPodiums.performance_list.count{it.place == currentSlope.location+"_f" && (it.position == "1" || it.position == "2" || it.position == "3")}
+                val wins = athleteWithMostWins.performance_list.count{it.place == currentSlope.location && it.position == "1"}
+                val podiums = athleteWithMostPodiums.performance_list.count{it.place == currentSlope.location && (it.position == "1" || it.position == "2" || it.position == "3")}
                 if (athleteWithMostWins.name == athleteWithMostPodiums.name){
                     binding.mostWinsAthlete.text = athleteWithMostWins.name+" is the queen of "+currentSlope.name+". She has "+podiums+" podiums and "+wins+" victories on the "+currentSlope.name+": definitely the athlete to beat"
                     binding.mostPodiumsAthlete.text = "We expect a great performance from her"

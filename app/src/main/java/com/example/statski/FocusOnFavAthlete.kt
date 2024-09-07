@@ -43,13 +43,6 @@ class FocusOnFavAthlete : AppCompatActivity() {
         val current_athlete : Athlete = Gson.fromJson(athlete_picked, Athlete::class.java)
         Perf_adapter = PerformanceAdapter(this, current_athlete.performance_list)
 
-//        current_athlete.performance_list.map{
-//            it.place.replace("_f", "")
-//        }
-//        current_athlete.performance_list.map{
-//            it.place.replace("_m", "")
-//        }
-
         binding.rvPerformanceList.adapter = Perf_adapter
         binding.rvPerformanceList.layoutManager = LinearLayoutManager(this)
 

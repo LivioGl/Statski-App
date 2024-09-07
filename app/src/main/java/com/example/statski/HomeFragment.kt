@@ -118,7 +118,13 @@ class HomeFragment : Fragment() {
             if(WomenRace != null){
                 winnersList_f = AthletesList.filter{
                     it.performance_list.filter{
-                        it.place == WomenRace.place+"_f" &&( it.cup_points == "100" || it.cup_points == "80" || it.cup_points == "60")
+                        WomenRace.place == it.place && ( it.cup_points == "100" || it.cup_points == "80" || it.cup_points == "60")
+                    }.isNotEmpty()
+                }.toMutableList()
+
+                winnersList_f = winnersList_f.filter{
+                    it.performance_list.filter {
+                        it.category.contains("Women")
                     }.isNotEmpty()
                 }.toMutableList()
 
@@ -143,7 +149,13 @@ class HomeFragment : Fragment() {
             if(MenRace != null){
                 winnersList_m = AthletesList.filter{
                     it.performance_list.filter{
-                        it.place == MenRace.place+"_m" &&( it.cup_points == "100" || it.cup_points == "80" || it.cup_points == "60")
+                        it.place == MenRace.place &&( it.cup_points == "100" || it.cup_points == "80" || it.cup_points == "60")
+                    }.isNotEmpty()
+                }.toMutableList()
+
+                winnersList_m = winnersList_m.filter{
+                    it.performance_list.filter {
+                        it.category.contains("Men")
                     }.isNotEmpty()
                 }.toMutableList()
 
