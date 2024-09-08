@@ -15,7 +15,7 @@ import java.util.Locale
 data class Performance(
     val position : String,
     val total_time : String,
-    val cup_points : String,
+    var cup_points : String,
     val run1 : String?,
     val run2 : String?,
     val place : String,
