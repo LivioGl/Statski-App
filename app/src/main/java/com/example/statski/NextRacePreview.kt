@@ -11,6 +11,8 @@ import com.example.statski.databinding.ActivityAthleteStatsBinding
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
+    // [Thesis]
+
 class NextRacePreview : AppCompatActivity() {
 
     lateinit var binding : ActivityNextRacePreviewBinding

@@ -29,6 +29,8 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
+    // [Thesis]
+
 class FocusOnFavAthlete : AppCompatActivity() {
     private lateinit var binding : ActivityFocusOnFavAthleteBinding
     private lateinit var Perf_adapter : PerformanceAdapter
@@ -99,7 +101,7 @@ class FocusOnFavAthlete : AppCompatActivity() {
                         endSeason = null
                     }
                 }
-                SortPerformances(startSeason, endSeason) // Apply sorting and filtering when season changes
+                SortPerformances(startSeason, endSeason)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {

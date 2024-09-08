@@ -25,17 +25,19 @@ import com.google.gson.Gson
 import java.util.Locale
 
 
+    // [Thesis]
+
 class FavouriteAthletes : Fragment() {
 
-    private lateinit var binding : FragmentFavouriteAthletesBinding
+    private lateinit var binding: FragmentFavouriteAthletesBinding
 
     private var FavAthlList = mutableListOf<Athlete>()
-    val viewModel_instance : AthletesViewModel by activityViewModels()
-    private lateinit var FavAthl_adapter : FavouriteAthletesAdapter
-    private var currentFilterText : String? = null
-    private lateinit var db : FirebaseFirestore
-    private lateinit var firebaseAuth : FirebaseAuth
-    private lateinit var user : FirebaseUser
+    val viewModel_instance: AthletesViewModel by activityViewModels()
+    private lateinit var FavAthl_adapter: FavouriteAthletesAdapter
+    private var currentFilterText: String? = null
+    private lateinit var db: FirebaseFirestore
+    private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var user: FirebaseUser
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,28 +58,33 @@ class FavouriteAthletes : Fragment() {
         binding.rvFavouriteAthletesList.setHasFixedSize(true)
 
         // Setting adapter instance
-        FavAthl_adapter = FavouriteAthletesAdapter(requireContext(), FavAthlList, mutableListOf<String>())
+        FavAthl_adapter =
+            FavouriteAthletesAdapter(requireContext(), FavAthlList, mutableListOf<String>())
 
         // Checking if there are fav athletes
         db.collection(firebaseAuth.currentUser!!.uid).get()
-            .addOnSuccessListener {
-                documents->
+            .addOnSuccessListener { documents ->
                 val favList = mutableListOf<String>()
-                for (document in documents){
+                for (document in documents) {
                     val favAthlete = document.getString("name")
-                    if(favAthlete != null){
+                    if (favAthlete != null) {
                         favList.add(favAthlete)
                     }
                 }
                 FavAthl_adapter = FavouriteAthletesAdapter(requireContext(), FavAthlList, favList)
                 binding.rvFavouriteAthletesList.adapter = FavAthl_adapter
 
-                if(favList.isEmpty()){
-                    Toast.makeText(requireContext(), "You do not have any favourite athlete ", Toast.LENGTH_LONG).show()
+                if (favList.isEmpty()) {
+                    Toast.makeText(
+                        requireContext(),
+                        "You do not have any favourite athlete ",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
 
-                FavAthl_adapter.setOnItemClickListener(object : FavouriteAthletesAdapter.OnItemClickListener{
-                    override fun OnItemClick(athlete: Athlete){
+                FavAthl_adapter.setOnItemClickListener(object :
+                    FavouriteAthletesAdapter.OnItemClickListener {
+                    override fun OnItemClick(athlete: Athlete) {
                         // Getting athlete selected
                         val athlete_picked = Gson().toJson(athlete)
 
@@ -91,9 +98,9 @@ class FavouriteAthletes : Fragment() {
 
             }
             .addOnFailureListener {
-                FavAthl_adapter = FavouriteAthletesAdapter(requireContext(), FavAthlList, mutableListOf<String>())
+                FavAthl_adapter =
+                    FavouriteAthletesAdapter(requireContext(), FavAthlList, mutableListOf<String>())
                 binding.rvFavouriteAthletesList.adapter = FavAthl_adapter
-                // TODO SetOnClickListener()
 
             }
 
@@ -104,7 +111,6 @@ class FavouriteAthletes : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
 
 
         // SearchView Configuration
@@ -121,30 +127,37 @@ class FavouriteAthletes : Fragment() {
             }
         })
     }
-    private fun filterList(query : String?){
-        if(query!= null){
-            var lowercase_query = query.lowercase(Locale.getDefault())
-            var filteredList = FavAthlList.filter{it.name.lowercase(Locale.ROOT).contains(lowercase_query)}
 
-            if(filteredList.isEmpty()){
+    private fun filterList(query: String?) {
+        if (query != null) {
+            var lowercase_query = query.lowercase(Locale.getDefault())
+            var filteredList =
+                FavAthlList.filter { it.name.lowercase(Locale.ROOT).contains(lowercase_query) }
+
+            if (filteredList.isEmpty()) {
                 Toast.makeText(requireContext(), "No Athlete found", Toast.LENGTH_SHORT).show()
-            } else{
+            } else {
                 FavAthl_adapter.setFilteredList(filteredList)
             }
         } else FavAthl_adapter.setFilteredList(FavAthlList)
     }
 }
 
-class FavouriteAthletesAdapter(val context: Context, var athleteList: List<Athlete>, var favList : MutableList<String> ):
-        RecyclerView.Adapter<FavouriteAthletesAdapter.ViewHolder>(){
-            inner class ViewHolder(val binding: ItemFavAthletesLayoutBinding): RecyclerView.ViewHolder(binding.root)
+class FavouriteAthletesAdapter(
+    val context: Context,
+    var athleteList: List<Athlete>,
+    var favList: MutableList<String>
+) :
+    RecyclerView.Adapter<FavouriteAthletesAdapter.ViewHolder>() {
+    inner class ViewHolder(val binding: ItemFavAthletesLayoutBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
 
-
-    fun setFilteredList(ListAthletes : List<Athlete>){
+    fun setFilteredList(ListAthletes: List<Athlete>) {
         this.athleteList = ListAthletes
         notifyDataSetChanged()
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = ItemFavAthletesLayoutBinding.inflate(layoutInflater, parent, false)
@@ -166,15 +179,16 @@ class FavouriteAthletesAdapter(val context: Context, var athleteList: List<Athle
         }
 
     }
+
     override fun getItemCount(): Int = favList.size
 
-    interface OnItemClickListener{
+    interface OnItemClickListener {
         fun OnItemClick(athlete: Athlete)
     }
 
     private var onItemClickListener: OnItemClickListener? = null
 
-    fun setOnItemClickListener(onItemClickListener: OnItemClickListener){
+    fun setOnItemClickListener(onItemClickListener: OnItemClickListener) {
         this.onItemClickListener = onItemClickListener
     }
 }
